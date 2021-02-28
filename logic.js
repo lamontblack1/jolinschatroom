@@ -28,12 +28,22 @@ var firebaseConfig = {
     let connectedPlayers= db.ref(".info/connected");
   //create variables to store user names, choices, user wins and losses
   
-
+  let dingOn = true
   var audioElement = document.createElement("audio");
 
   // Set it's source to the location
   audioElement.setAttribute("src", "ding-sound-effect_2.mp3");
 
+  $("#btnDing").on("click", function() {
+    if (dingOn) {
+      dingOn = false
+      $("#btnDing").text("Turn The Ding Back On")
+    }
+    else if  (!dingOn) {
+      dingOn = true
+      $("#btnDing").text("Turn The Ding Off")
+    }
+  })
 
   $("#btnSend").on("click", function() {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
@@ -97,8 +107,8 @@ messageListRef.on("child_added", function(snapshot) {
     )
   }
   else {
-      audioElement.play();
-    
+      if (dingOn) {audioElement.play();}
+          
       $("#messagesBox").prepend(
           "<div class='row mb-2'><div class='col-6' style='float: left;'>" + 
           "<div class='card' style='background-color: #FFE5D9;'><div class='card-header'>" + msgPlayerName + "  .  .  .  .  .  .  .  .  " + msgTimeStamp + "</div>" +
