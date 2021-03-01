@@ -34,6 +34,14 @@ var firebaseConfig = {
   // Set it's source to the location
   audioElement.setAttribute("src", "ding-sound-effect_2.mp3");
 
+  // tinymce.init({
+  //   selector: "#messageInput",
+  //   plugins: "emoticons",
+  //   toolbar: "emoticons",
+  //   toolbar_location: "bottom",
+  //   menubar: false
+  // });
+
   $("#btnDing").on("click", function() {
     if (dingOn) {
       dingOn = false
@@ -98,9 +106,9 @@ messageListRef.on("child_added", function(snapshot) {
 
   if (msgPlayerName === ($("#nameInput").val())) {
     $("#messagesBox").prepend(
-        "<div class='row mb-2'><div class='col-6'></div><div class='col-6'>" + 
-        "<div class='card' style='background-color: #f5dadf;'><div class='card-header'>" + msgPlayerName + "  .  .  .  .  .  .  .  .  " + msgTimeStamp + "</div>" +
-        "<div class='card-body'><h5 class='card-title'>" + msgMessage +"</h5>" +
+        "<div class='row mb-1'><div class='col-6'></div><div class='col-6'>" + 
+        "<div class='card' style='background-color: #f5dadf;'><div class='card-header px-1 pl-2'><b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
+        "<div class='card-body px-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
         "</div></div>" +
         "</div>" +
         "</div>"
@@ -108,11 +116,11 @@ messageListRef.on("child_added", function(snapshot) {
   }
   else {
       if (dingOn) {audioElement.play();}
-          
+
       $("#messagesBox").prepend(
-          "<div class='row mb-2'><div class='col-6' style='float: left;'>" + 
-          "<div class='card' style='background-color: #FFE5D9;'><div class='card-header'>" + msgPlayerName + "  .  .  .  .  .  .  .  .  " + msgTimeStamp + "</div>" +
-          "<div class='card-body'><h5 class='card-title'>" + msgMessage +"</h5>" +
+          "<div class='row mb-1'><div class='col-6' style='float: left;'>" + 
+          "<div class='card' style='background-color: #FFE5D9;'><div class='card-header p-1 pl-2 font-italic'><b>" + msgPlayerName + "</b>  .  .  .  .  .  " + msgTimeStamp + "</div>" +
+          "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
           "</div></div>" +
           "</div>" +
           "</div>"
