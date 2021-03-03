@@ -32,14 +32,14 @@ var firebaseConfig = {
   var audioElement = document.createElement("audio");
 
   // Set it's source to the location
-  audioElement.setAttribute("src", "ding-sound-effect_2.mp3");
+  audioElement.setAttribute("src", "./ding1.mp3");
 
   // tinymce.init({
   //   selector: "#messageInput",
   //   plugins: "emoticons",
   //   toolbar: "emoticons",
-  //   toolbar_location: "bottom",
-  //   menubar: false
+  //   toolbar_location: "top",
+  //   menubar: true
   // });
 
   $("#btnDing").on("click", function() {
@@ -94,7 +94,7 @@ function pushMessage(player, messageToPost) {
   });
 }
 
-messageListRef.on("child_added", function(snapshot) {
+messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   // console.log(snapshot.val());
   // console.log(snapshot.val().playerName);
   // console.log(snapshot.val().message);
@@ -107,8 +107,8 @@ messageListRef.on("child_added", function(snapshot) {
   if (msgPlayerName === ($("#nameInput").val())) {
     $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-6'></div><div class='col-6'>" + 
-        "<div class='card' style='background-color: #f5dadf;'><div class='card-header px-1 pl-2'><b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
-        "<div class='card-body px-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
+        "<div class='card' style='background-color: #f5dadf;'><div class='card-header p-1 pl-2'><b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
+        "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
         "</div></div>" +
         "</div>" +
         "</div>"
