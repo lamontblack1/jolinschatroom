@@ -99,7 +99,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   // console.log(snapshot.val().playerName);
   // console.log(snapshot.val().message);
   let dateVal = snapshot.val().messageTime
-  let msgTimeStamp = moment(dateVal).format("MMM D hh:mm:ss")
+  let msgTimeStamp = moment(dateVal).fromNow(false)
   // console.log(msgTimeStamp);
   let msgPlayerName = snapshot.val().playerName
   let msgMessage = snapshot.val().message;
