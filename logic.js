@@ -114,6 +114,16 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
         "</div>"
     )
   }
+  else if ($("#nameInput").val() =="") {
+    $("#messagesBox").prepend(
+      "<div class='row mb-1'><div class='col-3'></div><div class='col-6'>" + 
+      "<div class='card' style='background-color: #f5dadf;'><div class='card-header p-1 pl-2'><b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
+      "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
+      "</div></div>" +
+      "</div>" +
+      "</div>"
+  )
+  }
   else {
       if (dingOn) {audioElement.play();}
 
