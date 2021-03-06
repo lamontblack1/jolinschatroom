@@ -33,7 +33,6 @@ var firebaseConfig = {
 
   // Set it's source to the location
   audioElement.setAttribute("src", "./ding1.mp3");
-  let imgLine = ""
 
   // tinymce.init({
   //   selector: "#messageInput",
@@ -58,7 +57,6 @@ var firebaseConfig = {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
       let messageToSend = $("#messageInput").val()
       let myName = $("#nameInput").val().toLowerCase()
-      console.log(myName)
       pushMessage($("#nameInput").val(), messageToSend)
       $("#messageInput").val("")
     }
@@ -106,7 +104,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   // console.log(msgTimeStamp);
   let msgPlayerName = snapshot.val().playerName
   let msgMessage = snapshot.val().message;
-  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {imgLine = "<img src='./" + msgPlayerName +".jpg' alt='...'></img>"}
+  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {let imgLine = "<img src='./" + msgPlayerName +".jpg' alt='...'></img>"}
 
 
   if (msgPlayerName === ($("#nameInput").val())) {
