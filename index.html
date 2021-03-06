@@ -16,13 +16,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
     <style>
+        header {
+            background-color: #031D44;
+        }
         h1 {
             text-align: center;
-            background-color: #9D8189;
+            color: #c49bbb;
             padding: 20px;
         }
         body {
-            background-color: #D8E2DC;
+            /* background-color: #0081af; */
+            background: linear-gradient(180deg, rgba(0, 129, 175, 0.0903) 44.42%, rgba(8, 126, 139, 0.297028) 61.98%, rgba(8, 126, 139, 0) 91.67%);
+            height: 100%;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        #btnDing, #btnSend {
+            background-color: #031D44;
         }
         /* #BBE5ED */
     </style>
@@ -44,15 +55,15 @@
             <div class="col-md-3"></div>
         </div>
         
-        <div class="row mt-1">
+        <div class="row mt-1 mb-2">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <div class="input-group mb-2">
-                <textarea id="messageInput" class="form-control" placeholder="Your message" rows="2" aria-label="Your message" aria-describedby="button-addon2"></textarea>
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary font-weight-bold" type="button" id="btnSend">S e n d</button>
+                <div class="input-group">
+                    <textarea id="messageInput" class="form-control" placeholder="Your message" rows="2" aria-label="Your message" aria-describedby="button-addon2"></textarea>
+                    <div class="input-group-append">
+                    <button class="btn btn-outline-secondary font-weight-bold" type="button" id="btnSend">S e n d</button>
+                    </div>
                 </div>
-            </div>
             </div>
             <div class="col-md-3"></div>
             
