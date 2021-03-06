@@ -104,8 +104,9 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   // console.log(msgTimeStamp);
   let msgPlayerName = snapshot.val().playerName
   let msgMessage = snapshot.val().message;
-  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {let imgLine = "<img src='./" + msgPlayerName +".jpg' alt='...'></img>"}
-
+  let imgLine = ""
+  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {imgLine = "<img src='./" + msgPlayerName +".jpg' alt='...'></img>"}
+console.log(msgPlayerName)
 
   if (msgPlayerName === ($("#nameInput").val())) {
     $("#messagesBox").prepend(
