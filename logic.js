@@ -33,6 +33,7 @@ var firebaseConfig = {
 
   // Set it's source to the location
   audioElement.setAttribute("src", "./ding1.mp3");
+  let imgLine = ""
 
   // tinymce.init({
   //   selector: "#messageInput",
@@ -56,6 +57,8 @@ var firebaseConfig = {
   $("#btnSend").on("click", function() {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
       let messageToSend = $("#messageInput").val()
+      let myName = $("#nameInput").val().toLowerCase()
+      console.log(myName)
       pushMessage($("#nameInput").val(), messageToSend)
       $("#messageInput").val("")
     }
@@ -103,11 +106,13 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   // console.log(msgTimeStamp);
   let msgPlayerName = snapshot.val().playerName
   let msgMessage = snapshot.val().message;
+  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {imgLine = "<img src='./" + msgPlayerName +".jpg' alt='...'></img>"}
+
 
   if (msgPlayerName === ($("#nameInput").val())) {
     $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-6'></div><div class='col-6'>" + 
-        "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'><b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
+        "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" + imgLine + "<b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
         "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
         "</div></div>" +
         "</div>" +
@@ -129,7 +134,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
 
       $("#messagesBox").prepend(
           "<div class='row mb-1'><div class='col-6' style='float: left;'>" + 
-          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'><b>" + msgPlayerName + "</b>  .  .  .  .  .  " + msgTimeStamp + "</div>" +
+          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" + imgLine + "<b>" + msgPlayerName + "</b>  .  .  .  .  .  " + msgTimeStamp + "</div>" +
           "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
           "</div></div>" +
           "</div>" +
