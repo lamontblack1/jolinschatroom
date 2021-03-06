@@ -106,7 +106,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   let msgMessage = snapshot.val().message;
   //this can help add a picture
   let imgLine = ""
-  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {imgLine = "<img src='./" + msgPlayerName +".jpg' alt='...'></img>"}
+  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {imgLine = "<img src='./" + msgPlayerName +"1.jpg' alt='...'></img>"}
 console.log(msgPlayerName)
 
   if (msgPlayerName === ($("#nameInput").val())) {
