@@ -105,14 +105,12 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   let msgPlayerName = snapshot.val().playerName
   let msgMessage = snapshot.val().message;
   //this can help add a picture
-  let imgLine = ""
-  if ((msgPlayerName === "jolin") || (msgPlayerName === "heather")) {imgLine = "<img src='./" + msgPlayerName +"1.jpg' alt='...'></img>"}
-console.log(msgPlayerName)
+  let imgLine = "<img src='./images/" + msgPlayerName +".jpg' alt='...'></img>"
 
   if (msgPlayerName === ($("#nameInput").val())) {
     $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-6'></div><div class='col-6'>" + 
-        "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" + imgLine + "<b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
+        "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" + imgLine + "<b>" + msgPlayerName + " .  . " + msgTimeStamp + "</b></div>" +
         "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
         "</div></div>" +
         "</div>" +
@@ -122,7 +120,7 @@ console.log(msgPlayerName)
   else if ($("#nameInput").val() =="") {
     $("#messagesBox").prepend(
       "<div class='row mb-1'><div class='col-3'></div><div class='col-6'>" + 
-      "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'><b>" + msgPlayerName + "  .  .  .  .  .  " + msgTimeStamp + "</b></div>" +
+      "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" + imgLine + "<b>" + msgPlayerName + " .  . " + msgTimeStamp + "</b></div>" +
       "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
       "</div></div>" +
       "</div>" +
@@ -134,7 +132,7 @@ console.log(msgPlayerName)
 
       $("#messagesBox").prepend(
           "<div class='row mb-1'><div class='col-6' style='float: left;'>" + 
-          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" + imgLine + "<b>" + msgPlayerName + "</b>  .  .  .  .  .  " + msgTimeStamp + "</div>" +
+          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" + imgLine + "<b>" + msgPlayerName + "</b> .  . " + msgTimeStamp + "</div>" +
           "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
           "</div></div>" +
           "</div>" +
