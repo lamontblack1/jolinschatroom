@@ -57,7 +57,7 @@ var firebaseConfig = {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
       let messageToSend = $("#messageInput").val()
       let myName = $("#nameInput").val().toLowerCase()
-      pushMessage($("#nameInput").val(), messageToSend)
+      pushMessage($("#nameInput").val().trim(), messageToSend)
       $("#messageInput").val("")
     }
     else {
@@ -102,7 +102,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   let dateVal = snapshot.val().messageTime
   let msgTimeStamp = moment(dateVal).fromNow(false)
   // console.log(msgTimeStamp);
-  let msgPlayerName = snapshot.val().playerName
+  let msgPlayerName = snapshot.val().playerName.toLowerCase()
   let msgMessage = snapshot.val().message;
   //this can help add a picture
   let imgLine = "<img src='./images/" + msgPlayerName +".jpg' alt='...'></img>"
