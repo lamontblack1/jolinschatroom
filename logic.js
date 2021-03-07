@@ -110,7 +110,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   if (msgPlayerName === ($("#nameInput").val())) {
     $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-6'></div><div class='col-6'>" + 
-        "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" + imgLine + "<b>" + msgPlayerName + " .  . " + msgTimeStamp + "</b></div>" +
+        "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" + imgLine + msgPlayerName + " .  . <small class='text-muted'>" + msgTimeStamp + "</small></div>" +
         "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
         "</div></div>" +
         "</div>" +
@@ -120,7 +120,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   else if ($("#nameInput").val() =="") {
     $("#messagesBox").prepend(
       "<div class='row mb-1'><div class='col-3'></div><div class='col-6'>" + 
-      "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" + imgLine + "<b>" + msgPlayerName + " .  . " + msgTimeStamp + "</b></div>" +
+      "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" + imgLine + msgPlayerName + " .  . <small class='text-muted'>" + msgTimeStamp + "</small></div>" +
       "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
       "</div></div>" +
       "</div>" +
@@ -132,7 +132,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
 
       $("#messagesBox").prepend(
           "<div class='row mb-1'><div class='col-6' style='float: left;'>" + 
-          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" + imgLine + "<b>" + msgPlayerName + "</b> .  . " + msgTimeStamp + "</div>" +
+          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" + imgLine + msgPlayerName + " .  . <small class='text-muted'>" + msgTimeStamp + "</small></div>" +
           "<div class='card-body py-1 pl-2'><p class='card-title'>" + msgMessage +"</p>" +
           "</div></div>" +
           "</div>" +
