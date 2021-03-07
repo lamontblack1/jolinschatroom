@@ -21,11 +21,23 @@
     <style>
         header {
             background-color: #031D44;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            /* display: block; */
+            height: 60px;
+            z-index: 100;
+            margin-bottom: 30px;
         }
+
+        #theTop {
+            margin-top: 65px;
+        }
+
         h1 {
             text-align: center;
             color: #c49bbb;
-            padding: 10px;
         }
 
         img {
@@ -61,13 +73,13 @@
 </head>
 <body>
     <header><h1>Jolin's Chat Room</h1></header>
-    <div class="container mt-2">
+    <div id="theTop" class="container">
         <div class="row">
             <div class="col-md-3"></div>
             <div id="userInfoDiv" class="col-md-6 text-center"> 
-                <button class="btn btn-outline-secondary font-weight-bold mb-2" type="button" id="btnDing">Turn The Ding Off</button>
                 <div class="input-group mb-1">
                     <input type="text" id="nameInput" class="form-control" placeholder="Type your name to be able to send a message" aria-label="Your name" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnDing">Ding Off</button>
                     
                 </div>
             </div>
