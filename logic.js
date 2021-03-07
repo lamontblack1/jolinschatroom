@@ -102,7 +102,8 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
   let dateVal = snapshot.val().messageTime
   let msgTimeStamp = moment(dateVal).fromNow(false)
   // console.log(msgTimeStamp);
-  let msgPlayerName = snapshot.val().playerName.toLowerCase()
+  let msgPlayerName = snapshot.val().playerName
+  msgPlayerName = msgPlayerName.toLowerCase().trim()
   let msgMessage = snapshot.val().message;
   //this can help add a picture
   let imgLine = "<img src='./images/" + msgPlayerName +".jpg' alt='...'></img>"
