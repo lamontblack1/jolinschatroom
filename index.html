@@ -45,6 +45,12 @@
             margin-right: 5px;
         }
 
+        #typingGif {
+            opacity: 50%;
+            max-width: 100%;
+            visibility: hidden;
+        }
+
         body {
             /* background-color: #0081af; */
             background: linear-gradient(180deg, rgba(0, 129, 175, 0.43) 13.02%, rgba(8, 126, 139, 0.3741) 64.58%, rgba(8, 126, 139, 0) 91.67%);
@@ -90,7 +96,7 @@
         <div class="row mt-1 mb-2">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <div class="input-group">
+                <div class="input-group"><img id="typingGif" src="./images/typing.gif" alt="typing">
                     <textarea id="messageInput" class="form-control" placeholder="Your message" rows="2" aria-label="Your message" aria-describedby="button-addon2"></textarea>
                     <div class="input-group-append">
                     <button class="btn btn-outline-secondary font-weight-bold" type="button" id="btnSend">S e n d</button>

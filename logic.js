@@ -32,7 +32,8 @@ var firebaseConfig = {
   var audioElement = document.createElement("audio");
 
   // Set it's source to the location
-  audioElement.setAttribute("src", "./ding1.mp3");
+audioElement.setAttribute("src", "./ding1.mp3");
+  let myScreenName = ""
 
   // tinymce.init({
   //   selector: "#messageInput",
@@ -41,6 +42,35 @@ var firebaseConfig = {
   //   toolbar_location: "top",
   //   menubar: true
   // });
+
+$("#messageInput").keyup(function () {
+  if (myScreenName !== "") {
+    db.ref("/Jolin/typing").push({
+        personTyping: myScreenName
+    });
+    }
+});
+
+db.ref("/Jolin/typing").on("child_added", function (snap) {
+  if (snap.val()) {
+    if (snap.val().personTyping !== myScreenName) {
+      console.log(myScreenName)
+      makeTypingGifVisible()
+    }
+  }
+  
+});
+
+function makeTypingGifVisible() {
+  $("#typingGif").css("visibility","visible")
+  setTimeout(function () {
+    $("#typingGif").css("visibility","hidden");
+  }, 1500);
+};
+
+ window.onbeforeunload = function(event) {
+      db.ref("/Jolin/typing").remove()
+    };
 
   $("#btnDing").on("click", function() {
     if (dingOn) {
@@ -56,6 +86,7 @@ var firebaseConfig = {
   $("#btnSend").on("click", function() {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
       let messageToSend = $("#messageInput").val()
+      myScreenName = $("#nameInput").val().toLowerCase()
       let myName = $("#nameInput").val().toLowerCase()
       pushMessage($("#nameInput").val().trim(), messageToSend)
       $("#messageInput").val("")
