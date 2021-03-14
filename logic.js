@@ -30,6 +30,7 @@ var firebaseConfig = {
   
   let dingOn = true
   var audioElement = document.createElement("audio");
+  var typingTimeout
 
   // Set it's source to the location
 audioElement.setAttribute("src", "./ding1.mp3");
@@ -54,7 +55,6 @@ $("#messageInput").keyup(function () {
 db.ref("/Jolin/typing").on("child_added", function (snap) {
   if (snap.val()) {
     if (snap.val().personTyping !== myScreenName) {
-      console.log(myScreenName)
       makeTypingGifVisible()
     }
   }
@@ -62,10 +62,11 @@ db.ref("/Jolin/typing").on("child_added", function (snap) {
 });
 
 function makeTypingGifVisible() {
-  $("#typingGif").css("visibility","visible")
-  setTimeout(function () {
+  $("#typingGif").css("visibility", "visible")
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(function () {
     $("#typingGif").css("visibility","hidden");
-  }, 1500);
+  }, 1000);
 };
 
  window.onbeforeunload = function(event) {
