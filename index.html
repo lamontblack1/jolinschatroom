@@ -17,7 +17,8 @@
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&family=Indie+Flower&display=swap" rel="stylesheet">
-
+    // to send email
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
     <style>
         header {
             background-color: #031D44;
@@ -59,7 +60,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        #btnDing, #btnSend {
+        #btnDing, #btnSend, #btnSendText {
             background-color: #031D44;
             color: #c49bbb;
         }
@@ -100,6 +101,7 @@
                     <textarea id="messageInput" class="form-control" placeholder="Your message" rows="2" aria-label="Your message" aria-describedby="button-addon2"></textarea>
                     <div class="input-group-append">
                     <button class="btn btn-outline-secondary font-weight-bold" type="button" id="btnSend">S e n d</button>
+                    <button class="btn btn-outline-secondary font-weight-bold ml-1" type="button" id="btnSendText">Send <br>A Text</button>
                     </div>
                 </div>
             </div>

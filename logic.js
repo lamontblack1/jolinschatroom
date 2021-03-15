@@ -97,6 +97,41 @@ function makeTypingGifVisible() {
     }
   });
 
+  $("#btnSendText").on("click", function () {
+    if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
+      let messageToSend = $("#messageInput").val()
+      //send email ergo text messages
+      Email.send({
+        Host: "smtp.gmail.com",
+        Username: "lamontandrewblack",
+        Password: "YyY938H(JJ",
+        To: '9415868180@messaging.sprintpcs.com',
+        From: "Jolin@home.com",
+        Subject: "From Jolins Chat",
+        Body: messageToSend
+      }).then(
+        // message => alert(message)
+      );
+          
+      Email.send({
+        Host: "smtp.gmail.com",
+        Username: "lamontandrewblack",
+        Password: "YyY938H(JJ",
+        To: '9415868224@messaging.sprintpcs.com',
+        From: "Jolin@home.com",
+        Subject: "From Jolins Chat",
+        Body: messageToSend
+      }).then(
+      );
+      
+      $("#messageInput").val("")
+    }
+    else {
+      alert("Type your name in the top box to be able to send a message!")
+    }
+    
+  });
+
 // When the client's connection state changes keep track of connections
 connectedPlayers.on("value", function(snap) {
   // If they are connected..
