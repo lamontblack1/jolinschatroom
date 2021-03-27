@@ -87,6 +87,7 @@ function makeTypingGifVisible() {
   $("#btnSend").on("click", function() {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
       let messageToSend = $("#messageInput").val()
+      messageToSend = urlify(messageToSend);
       myScreenName = $("#nameInput").val().toLowerCase()
       let myName = $("#nameInput").val().toLowerCase()
       pushMessage($("#nameInput").val().trim(), messageToSend)
@@ -106,23 +107,23 @@ function makeTypingGifVisible() {
         Username: "lamontandrewblack",
         Password: "YyY938H(JJ",
         To: '9415868180@messaging.sprintpcs.com',
-        From: "Jolin@home.com",
-        Subject: "From Jolins Chat",
+        From: "lamontandrewblack@gmail.com",
+        Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend
       }).then(
         // message => alert(message)
       );
           
-      Email.send({
-        Host: "smtp.gmail.com",
-        Username: "lamontandrewblack",
-        Password: "YyY938H(JJ",
-        To: '9415868224@messaging.sprintpcs.com',
-        From: "Jolin@home.com",
-        Subject: "From Jolins Chat",
-        Body: messageToSend
-      }).then(
-      );
+      // Email.send({
+      //   Host: "smtp.gmail.com",
+      //   Username: "lamontandrewblack",
+      //   Password: "YyY938H(JJ",
+      //   To: '9415868224@messaging.sprintpcs.com',
+      //   From: "Jolin@home.com",
+      //   Subject: "From Jolins Chat",
+      //   Body: messageToSend
+      // }).then(
+      // );
       
       $("#messageInput").val("")
     }
@@ -216,3 +217,15 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
 }, function(errorObject) {
   console.log("Errors handled: " + errorObject.code);
 });
+
+function urlify(text) {
+  let urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url) {
+    return '<a href="' + url + '">' + url + '</a>';
+  })
+  // or alternatively
+  // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}
+
+// var text = 'Find me at http://www.example.com and also at http://stackoverflow.com';
+// var html = urlify(text);
