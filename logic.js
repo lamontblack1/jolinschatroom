@@ -109,21 +109,22 @@ function makeTypingGifVisible() {
         To: '9415868180@messaging.sprintpcs.com',
         From: "lamontandrewblack@gmail.com",
         Subject: "From Jolin, msg: " + messageToSend,
-        Body: messageToSend
+        Body: messageToSend  //don't know why this stopped working when it was
       }).then(
-        // message => alert(message)
+        pushMessage($("#nameInput").val().trim(), "Texted to Lamont and Heather: " + messageToSend)
       );
           
-      // Email.send({
-      //   Host: "smtp.gmail.com",
-      //   Username: "lamontandrewblack",
-      //   Password: "YyY938H(JJ",
-      //   To: '9415868224@messaging.sprintpcs.com',
-      //   From: "Jolin@home.com",
-      //   Subject: "From Jolins Chat",
-      //   Body: messageToSend
-      // }).then(
-      // );
+      Email.send({
+        Host: "smtp.gmail.com",
+        Username: "lamontandrewblack",
+        Password: "YyY938H(JJ",
+        To: '9415868224@messaging.sprintpcs.com',
+        From: "Jolin@home.com",
+        Subject: "From Jolin, msg: " + messageToSend,
+        Body: messageToSend
+      }).then(
+      );
+
       
       $("#messageInput").val("")
     }
@@ -221,7 +222,7 @@ messageListRef.limitToLast(20).on("child_added", function(snapshot) {
 function urlify(text) {
   let urlRegex = /(https?:\/\/[^\s]+)/g;
   return text.replace(urlRegex, function(url) {
-    return '<a href="' + url + '">' + url + '</a>';
+    return '<a href="' + url + '" target="_blank">' + url + '</a>';
   })
   // or alternatively
   // return text.replace(urlRegex, '<a href="$1">$1</a>')
