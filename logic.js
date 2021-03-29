@@ -99,15 +99,17 @@ function makeTypingGifVisible() {
   });
 
   $("#btnSendText").on("click", function () {
-    if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
+    if (($("#passwordInput").val() !== "") && ($("#messageInput").val() !== "")) {
       let messageToSend = $("#messageInput").val()
+      let pwd = $("#passwordInput").val()
+
       //send email ergo text messages
       Email.send({
         Host: "smtp.gmail.com",
-        Username: "lamontandrewblack",
-        Password: "YyY938H(JJ",
+        Username: "longqicoding",
+        Password: pwd,
         To: '9415868180@messaging.sprintpcs.com',
-        From: "lamontandrewblack@gmail.com",
+        From: "longqicodingk@gmail.com",
         Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend  //don't know why this stopped working when it was
       }).then(
@@ -116,8 +118,8 @@ function makeTypingGifVisible() {
           
       Email.send({
         Host: "smtp.gmail.com",
-        Username: "lamontandrewblack",
-        Password: "YyY938H(JJ",
+        Username: "longqicoding",
+        Password: pwd,
         To: '9415868224@messaging.sprintpcs.com',
         From: "Jolin@home.com",
         Subject: "From Jolin, msg: " + messageToSend,
@@ -129,7 +131,7 @@ function makeTypingGifVisible() {
       $("#messageInput").val("")
     }
     else {
-      alert("Type your name in the top box to be able to send a message!")
+      alert("You have to type the password to send a text message!")
     }
     
   });
