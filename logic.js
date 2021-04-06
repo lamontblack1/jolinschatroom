@@ -111,10 +111,16 @@ function makeTypingGifVisible() {
         To: '9415868180@messaging.sprintpcs.com',
         From: "longqicodingk@gmail.com",
         Subject: "From Jolin, msg: " + messageToSend,
-        Body: messageToSend  //don't know why this stopped working when it was
-      }).then(
-        pushMessage($("#nameInput").val().trim(), "Texted to Lamont and Heather: " + messageToSend)
-      );
+        Body: messageToSend
+      }).then(function(message) {
+
+        if (message.trim() === "OK") {
+          pushMessage($("#nameInput").val().trim(), "The text worked and was sent. You sent: " + messageToSend);
+        } else {
+          pushMessage($("#nameInput").val().trim(), "The text DID NOT WORK! Check the password and try again");
+        }
+      }
+        );
           
       Email.send({
         Host: "smtp.gmail.com",
@@ -125,13 +131,13 @@ function makeTypingGifVisible() {
         Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend
       }).then(
-      );
-
+        );
+        
+        $("#messageInput").val("")
       
-      $("#messageInput").val("")
     }
     else {
-      alert("You have to type the password to send a text message!")
+      alert("You have to type the password and your name to send a text message!")
     }
     
   });
