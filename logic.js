@@ -19,6 +19,7 @@ var firebaseConfig = {
   //connections to store player info and messages and notifications
   // let playerInfoRef = db.ref("/players")
   let messageListRef = db.ref("/Jolin/messages")
+  let toDoRef = db.ref("/Jolin/toDo")
   
   //set up connection monitor and read connections
   let connectionsListRef = db.ref("Jolin/connections");
@@ -30,7 +31,8 @@ var firebaseConfig = {
   
   let dingOn = true
   var audioElement = document.createElement("audio");
-  var typingTimeout
+var typingTimeout
+  let aryToDo = []
 
   // Set it's source to the location
 audioElement.setAttribute("src", "./ding1.mp3");
@@ -70,19 +72,30 @@ function makeTypingGifVisible() {
 };
 
  window.onbeforeunload = function(event) {
-      db.ref("/Jolin/typing").remove()
+   db.ref("/Jolin/typing").remove()
     };
 
-  $("#btnDing").on("click", function() {
-    if (dingOn) {
-      dingOn = false
-      $("#btnDing").text("Turn The Ding Back On")
-    }
-    else if  (!dingOn) {
-      dingOn = true
-      $("#btnDing").text("Turn The Ding Off")
-    }
-  })
+$("#btnDing").on("click", function () {
+  if (dingOn) {
+    dingOn = false
+    $("#btnDing").text("Turn The Ding Back On")
+  }
+  else if (!dingOn) {
+    dingOn = true
+    $("#btnDing").text("Turn The Ding Off")
+  }
+});
+
+let toDoVisible = false
+$("#btnToDo").on("click", function () {
+  if (toDoVisible) {
+    $("#toDoWrapper").css("visibility", "hidden")
+    toDoVisible = !toDoVisible
+  } else {
+    $("#toDoWrapper").css("visibility", "visible")
+    toDoVisible = !toDoVisible
+  }
+});
 
   $("#btnSend").on("click", function() {
     if (($("#messageInput").val() !== "") && ($("#nameInput").val() !== "")) {
@@ -161,6 +174,41 @@ connectionsListRef.on("value", function(snap) {
   //If this instance is first connection, it is player1, if second connection, player2. otherwise too many people
   
     
+});
+
+toDoRef.on("value", function(snap) {
+  aryToDo = []
+  for (const property in snap.val()) {
+    aryToDo.push(snap.val()[property].toDo);
+  }
+  $("#toDoList").empty()
+  for (let i = 0; i < aryToDo.length; i++) {
+    const element = aryToDo[i];
+    $("#toDoList").prepend("<button class='to-do-item' id='" + i + "'>x</button><span>" + element + "</span><br>")
+  }
+});
+
+$("#btnAddToDo").on("click", function () {
+  let item = $("#toDoInput").val()
+  toDoRef.push({
+    toDo: item
+  });
+  $("#toDoInput").val("")
+});
+
+$(document).on("click", ".to-do-item", function (event) {
+  let aryIndex = parseInt(this.id)
+  let newAryToDo = aryToDo
+    // alert(this.id)
+  newAryToDo.splice(aryIndex, 1); //problem is here
+  toDoRef.remove()
+  console.log(newAryToDo)
+    for (let i = 0; i < newAryToDo.length; i++) {
+      const element = newAryToDo[i];
+      toDoRef.push({
+      toDo: element
+    });
+  }
 });
 
 
