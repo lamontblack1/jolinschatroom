@@ -122,7 +122,7 @@ $("#btnToDo").on("click", function () {
         Username: "longqicoding",
         Password: pwd,
         To: '9415868180@messaging.sprintpcs.com',
-        From: "longqicodingk@gmail.com",
+        From: "Jolin",
         Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend
       }).then(function(message) {
@@ -140,7 +140,7 @@ $("#btnToDo").on("click", function () {
         Username: "longqicoding",
         Password: pwd,
         To: '9415868224@messaging.sprintpcs.com',
-        From: "Jolin@home.com",
+        From: "Jolin",
         Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend
       }).then(
@@ -283,6 +283,3 @@ function urlify(text) {
   // or alternatively
   // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
-
-// var text = 'Find me at http://www.example.com and also at http://stackoverflow.com';
-// var html = urlify(text);
