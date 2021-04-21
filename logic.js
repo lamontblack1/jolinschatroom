@@ -122,7 +122,7 @@ $("#btnToDo").on("click", function () {
         Username: "longqicoding",
         Password: pwd,
         To: '9415868180@messaging.sprintpcs.com',
-        From: "Jolin",
+        From: "longqicoding@home.com",
         Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend
       }).then(function(message) {
@@ -140,7 +140,7 @@ $("#btnToDo").on("click", function () {
         Username: "longqicoding",
         Password: pwd,
         To: '9415868224@messaging.sprintpcs.com',
-        From: "Jolin",
+        From: "Jolin@home.com",
         Subject: "From Jolin, msg: " + messageToSend,
         Body: messageToSend
       }).then(
