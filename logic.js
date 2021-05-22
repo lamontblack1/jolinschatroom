@@ -200,17 +200,19 @@ $("#btnAddToDo").on("click", function () {
 });
 
 $(document).on("click", ".to-do-item", function (event) {
-  let aryIndex = parseInt(this.id);
-  let newAryToDo = aryToDo;
-  // alert(this.id)
-  newAryToDo.splice(aryIndex, 1); //problem is here
-  toDoRef.remove();
-  console.log(newAryToDo);
-  for (let i = 0; i < newAryToDo.length; i++) {
-    const element = newAryToDo[i];
-    toDoRef.push({
-      toDo: element,
-    });
+  if ($("#passwordInput").val() === "password") {
+    let aryIndex = parseInt(this.id);
+    let newAryToDo = aryToDo;
+    // alert(this.id)
+    newAryToDo.splice(aryIndex, 1); //problem is here
+    toDoRef.remove();
+    console.log(newAryToDo);
+    for (let i = 0; i < newAryToDo.length; i++) {
+      const element = newAryToDo[i];
+      toDoRef.push({
+        toDo: element,
+      });
+    }
   }
 });
 
