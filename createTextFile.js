@@ -104,7 +104,7 @@ $("#btnSend").on("click", function () {
     pushMessage($("#nameInput").val().trim(), messageToSend);
     $("#messageInput").val("");
   } else {
-    alert("Name or Message is empty!");
+    alert("Type your name in the top box to be able to send a message!");
   }
 });
 
@@ -112,13 +112,14 @@ $("#btnSendText").on("click", function () {
   if ($("#passwordInput").val() !== "" && $("#messageInput").val() !== "") {
     let messageToSend = $("#messageInput").val();
     let pwd = $("#passwordInput").val();
+
     //send email ergo text messages
     Email.send({
       Host: "smtp.gmail.com",
-      Username: "wanglongqi77@gmail.com",
+      Username: "longqicoding",
       Password: pwd,
       To: "9415868180@messaging.sprintpcs.com",
-      From: "lamontblack100@yahoo.com",
+      From: "longqicoding@gmail.com",
       Subject: "From Jolin, msg: " + messageToSend,
       Body: messageToSend
     }).then(function (message) {
@@ -144,9 +145,7 @@ $("#btnSendText").on("click", function () {
       From: "Jolin@home.com",
       Subject: "From Jolin, msg: " + messageToSend,
       Body: messageToSend
-    }).then(function (message) {
-      console.log(message);
-    });
+    }).then();
 
     $("#messageInput").val("");
   } else {
@@ -226,7 +225,7 @@ function pushMessage(player, messageToPost) {
   });
 }
 
-messageListRef.limitToLast(10).on(
+messageListRef.limitToLast(20000).on(
   "child_added",
   function (snapshot) {
     // console.log(snapshot.val());
@@ -243,59 +242,68 @@ messageListRef.limitToLast(10).on(
     let imgLine =
       "<img src='./images/" + msgPlayerName + ".jpg' alt='...'></img>";
 
-    if (msgPlayerName === $("#nameInput").val().toLowerCase()) {
-      $("#messagesBox").prepend(
-        "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
-          "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" +
-          imgLine +
-          msgPlayerName +
-          "  <small class='text-muted'>" +
-          msgTimeStamp +
-          "</small></div>" +
-          "<div class='card-body py-1 pl-2'><p class='card-title'>" +
-          msgMessage +
-          "</p>" +
-          "</div></div>" +
-          "</div>" +
-          "</div>"
-      );
-    } else if ($("#nameInput").val() == "") {
-      $("#messagesBox").prepend(
-        "<div class='row mb-1'><div class='col-1'></div><div class='col-10'>" +
-          "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" +
-          imgLine +
-          msgPlayerName +
-          "  <small class='text-muted'>" +
-          msgTimeStamp +
-          "</small></div>" +
-          "<div class='card-body py-1 pl-2'><p class='card-title'>" +
-          msgMessage +
-          "</p>" +
-          "</div></div>" +
-          "</div>" +
-          "</div>"
-      );
-    } else {
-      if (dingOn) {
-        audioElement.play();
-      }
+    document.write(
+      msgPlayerName +
+        ", " +
+        moment(dateVal).format("M/D/y") +
+        ": " +
+        msgMessage +
+        "<br>"
+    );
 
-      $("#messagesBox").prepend(
-        "<div class='row mb-1'><div class='col-10' style='float: left;'>" +
-          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
-          imgLine +
-          msgPlayerName +
-          "  <small class='text-muted'>" +
-          msgTimeStamp +
-          "</small></div>" +
-          "<div class='card-body py-1 pl-2'><p class='card-title'>" +
-          msgMessage +
-          "</p>" +
-          "</div></div>" +
-          "</div>" +
-          "</div>"
-      );
-    }
+    // if (msgPlayerName === $("#nameInput").val().toLowerCase()) {
+    //   $("#messagesBox").prepend(
+    //     "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
+    //       "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" +
+    //       imgLine +
+    //       msgPlayerName +
+    //       "  <small class='text-muted'>" +
+    //       msgTimeStamp +
+    //       "</small></div>" +
+    //       "<div class='card-body py-1 pl-2'><p class='card-title'>" +
+    //       msgMessage +
+    //       "</p>" +
+    //       "</div></div>" +
+    //       "</div>" +
+    //       "</div>"
+    //   );
+    // } else if ($("#nameInput").val() == "") {
+    //   $("#messagesBox").prepend(
+    //     "<div class='row mb-1'><div class='col-1'></div><div class='col-10'>" +
+    //       "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" +
+    //       imgLine +
+    //       msgPlayerName +
+    //       "  <small class='text-muted'>" +
+    //       msgTimeStamp +
+    //       "</small></div>" +
+    //       "<div class='card-body py-1 pl-2'><p class='card-title'>" +
+    //       msgMessage +
+    //       "</p>" +
+    //       "</div></div>" +
+    //       "</div>" +
+    //       "</div>"
+    //   );
+    // } else {
+    //   if (dingOn) {
+    //     audioElement.play();
+    //   }
+
+    //   $("#messagesBox").prepend(
+    //     "<div class='row mb-1'><div class='col-10' style='float: left;'>" +
+    //       "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
+    //       imgLine +
+    //       msgPlayerName +
+    //       "  <small class='text-muted'>" +
+    //       msgTimeStamp +
+    //       "</small></div>" +
+    //       "<div class='card-body py-1 pl-2'><p class='card-title'>" +
+    //       msgMessage +
+    //       "</p>" +
+    //       "</div></div>" +
+    //       "</div>" +
+    //       "</div>"
+    //   );
+    // }
 
     // Handle the errors
   },
