@@ -25,6 +25,9 @@
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <!-- for cloud storage, hope it is right -->
     <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script> -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
         header {
@@ -41,6 +44,7 @@
 
         #theTop {
             margin-top: 65px;
+            z-index: 60;
         }
 
         h1 {
@@ -87,9 +91,11 @@
             /* background: linear-gradient(180deg, rgba(0, 129, 175, 0.43) 13.02%, rgba(8, 126, 139, 0.3741) 64.58%, rgba(8, 126, 139, 0) 91.67%); */
             background-color: #b9e5f6;
             top: 60px;
-            z-index: 101;
+            z-index: 50;
             padding: 5px 10px 5px 5px;
-            visibility: hidden;
+            border: 1px solid gray;
+            border-radius: 5px;
+            /* visibility: hidden; */
 
         }
 
@@ -135,8 +141,7 @@
 
 <body>
     <header>
-        <h1>Jolin's Chat Room <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfn5t2MVTYvFpc60rqUEo8lu-N1O681nG8HUiXUPWRskDlKcQ/viewform?usp=sf_link" target="_blank">  PAT</a></h1>
+        <h1>Chatty Jolin's Room </h1>
     </header>
     <div id="toDoWrapper">
         <div id="toDoList">
@@ -145,10 +150,21 @@
         </div>
         <input type="text" id="toDoInput" placeholder="Add To Do">
         <button class="toDoItem" id="btnAddToDo">Add It! <Doc></Doc></button>
+        <hr>
+        <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfn5t2MVTYvFpc60rqUEo8lu-N1O681nG8HUiXUPWRskDlKcQ/viewform?usp=sf_link"
+            target="_blank"> Pay Attention Sheet</a></p>
+        <p><a href="https://jworg.zoom.us/j/81916490451?pwd=SWtZZEhSQjRwaXFuVFR6ZVdMbGltZz09"
+                target="_blank"> Meetings</a></p>
+        <p><a href="https://us02web.zoom.us/j/83788180808?pwd=WkpFcE1nLythQnppaG5iK3BaV29qdz09"
+                    target="_blank"> Saturday Field Service</a></p>
+        <p><a href="https://jworg.zoom.us/j/83721514044?pwd=VjFxalZPTml6NGpjOE5sekZrQTdlQT09"
+                        target="_blank"> 3rd Saturday Field Service</a></p>
+        <p><a href="https://www.jw.org/en/library/videos/#en/categories/StudioNewsReports" target="_black">"What's new" videos</a></p>
+        
     </div>
 
     <div id="theTop" class="container">
-        <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnToDo">To Do</button>
+        <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnToDo">To Do and Links</button>
 
 
         <div class="row">

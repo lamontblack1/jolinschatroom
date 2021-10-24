@@ -8,6 +8,7 @@ var firebaseConfig = {
   messagingSenderId: "10223659033",
   appId: "1:10223659033:web:6b998588ce24ad03796288"
 };
+let msgIdCounter = 0;
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -85,12 +86,15 @@ $("#btnDing").on("click", function () {
 });
 
 let toDoVisible = false;
+$("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
 $("#btnToDo").on("click", function () {
   if (toDoVisible) {
-    $("#toDoWrapper").css("visibility", "hidden");
+    $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
+    // $("#toDoWrapper").css("visibility", "hidden");
     toDoVisible = !toDoVisible;
   } else {
     $("#toDoWrapper").css("visibility", "visible");
+    $("#toDoWrapper").show("drop", { direction: "up" });
     toDoVisible = !toDoVisible;
   }
 });
@@ -195,6 +199,7 @@ toDoRef.on("value", function (snap) {
 
 $("#btnAddToDo").on("click", function () {
   let item = $("#toDoInput").val();
+  item = urlify(item);
   toDoRef.push({
     toDo: item
   });
@@ -202,7 +207,7 @@ $("#btnAddToDo").on("click", function () {
 });
 
 $(document).on("click", ".to-do-item", function (event) {
-  if ($("#passwordInput").val() === "password") {
+  if ($("#passwordInput").val() !== "password") {
     let aryIndex = parseInt(this.id);
     let newAryToDo = aryToDo;
     // alert(this.id)
@@ -232,6 +237,7 @@ messageListRef.limitToLast(10).on(
     // console.log(snapshot.val());
     // console.log(snapshot.val().playerName);
     // console.log(snapshot.val().message);
+    msgIdCounter = msgIdCounter + 1;
     let dateVal = snapshot.val().messageTime;
     // let msgTimeStamp = moment(dateVal).fromNow(false)
     let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
@@ -246,7 +252,9 @@ messageListRef.limitToLast(10).on(
     if (msgPlayerName === $("#nameInput").val().toLowerCase()) {
       $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
-          "<div class='card' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" +
+          "<div class='card' id='message" +
+          msgIdCounter +
+          "' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" +
           imgLine +
           msgPlayerName +
           "  <small class='text-muted'>" +
@@ -262,7 +270,9 @@ messageListRef.limitToLast(10).on(
     } else if ($("#nameInput").val() == "") {
       $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-1'></div><div class='col-10'>" +
-          "<div class='card' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" +
+          "<div class='card' id='message" +
+          msgIdCounter +
+          "' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" +
           imgLine +
           msgPlayerName +
           "  <small class='text-muted'>" +
@@ -282,7 +292,9 @@ messageListRef.limitToLast(10).on(
 
       $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-10' style='float: left;'>" +
-          "<div class='card' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
+          "<div class='card' id='message" +
+          msgIdCounter +
+          "' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
           imgLine +
           msgPlayerName +
           "  <small class='text-muted'>" +
@@ -296,7 +308,7 @@ messageListRef.limitToLast(10).on(
           "</div>"
       );
     }
-
+    $("#message" + msgIdCounter).effect("shake");
     // Handle the errors
   },
   function (errorObject) {
@@ -307,7 +319,7 @@ messageListRef.limitToLast(10).on(
 function urlify(text) {
   let urlRegex = /(https?:\/\/[^\s]+)/g;
   return text.replace(urlRegex, function (url) {
-    return '<a href="' + url + '" target="_blank">' + url + "</a>";
+    return '<a href="' + url + '" target="_blank">' + "Here is the link</a>";
   });
   // or alternatively
   // return text.replace(urlRegex, '<a href="$1">$1</a>')
