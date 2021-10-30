@@ -119,10 +119,10 @@ $("#btnSendText").on("click", function () {
     //send email ergo text messages
     Email.send({
       Host: "smtp.gmail.com",
-      Username: "wanglongqi77@gmail.com",
+      Username: "longqicoding",
       Password: pwd,
       To: "9415868180@messaging.sprintpcs.com",
-      From: "lamontblack100@yahoo.com",
+      From: "longqicoding",
       Subject: "From Jolin, msg: " + messageToSend,
       Body: messageToSend
     }).then(function (message) {
@@ -135,7 +135,7 @@ $("#btnSendText").on("click", function () {
       } else {
         pushMessage(
           $("#nameInput").val().trim(),
-          "The text DID NOT WORK! Check the password and try again"
+          "The text DID NOT WORK! Check the password and make sure nothing is blank and try again"
         );
       }
     });
