@@ -122,7 +122,7 @@ $("#btnSendText").on("click", function () {
       Username: "longqicoding",
       Password: pwd,
       To: "9415868180@messaging.sprintpcs.com",
-      From: "longqicoding",
+      From: "jolin@home.com",
       Subject: "From Jolin, msg: " + messageToSend,
       Body: messageToSend
     }).then(function (message) {
