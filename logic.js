@@ -86,7 +86,9 @@ $("#btnDing").on("click", function () {
 });
 
 let toDoVisible = false;
+let patVisible = false;
 $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
+$("#patWrapper").hide("drop", { direction: "down" }, "slow");
 $("#btnToDo").on("click", function () {
   if (toDoVisible) {
     $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
@@ -96,6 +98,18 @@ $("#btnToDo").on("click", function () {
     $("#toDoWrapper").css("visibility", "visible");
     $("#toDoWrapper").show("drop", { direction: "up" });
     toDoVisible = !toDoVisible;
+  }
+});
+
+$("#btnPat").on("click", function () {
+  if (patVisible) {
+    $("#patWrapper").hide("drop", { direction: "down" }, "slow");
+    // $("#toDoWrapper").css("visibility", "hidden");
+    patVisible = !patVisible;
+  } else {
+    $("#patWrapper").css("visibility", "visible");
+    $("#patWrapper").show("drop", { direction: "up" });
+    patVisible = !patVisible;
   }
 });
 
@@ -315,6 +329,58 @@ messageListRef.limitToLast(10).on(
     console.log("Errors handled: " + errorObject.code);
   }
 );
+
+$("#submitPat").on("click", function (event) {
+  event.preventDefault();
+  for (let i = 0; i < 13; i++) {
+    pat.questions[i].question = $("#question" + i).val();
+    pat.questions[i].answer = $("#answer" + i).val();
+  }
+  console.log(pat);
+
+  $.post("/api/pat", pat).then(function (data) {
+    if (data === true) {
+      alert("Your answers have been submitted!");
+    }
+  });
+});
+
+var patURL = "https://jolin-pat-api.herokuapp.com/api/pat";
+let pat;
+
+$.ajax({
+  url: patURL,
+  method: "GET"
+}).then(function (response) {
+  console.log(response);
+  pat = response;
+
+  $("#chapters").text(response.chapters);
+  $("#patDates").text(response.dates);
+
+  for (let index = 0; index < 13; index++) {
+    $("#questionsWrapper").append(
+      "<div class='form-group'>" +
+        "<label for='question" +
+        index +
+        "'>Question</label>" +
+        "<textarea class='form-control' id='question" +
+        index +
+        "' rows='3'>" +
+        response.questions[index].question +
+        "</textarea></div>" +
+        "<div class='form-group'>" +
+        "<label for='answer" +
+        index +
+        "'>Answer</label>" +
+        "<textarea class='form-control' id='answer" +
+        index +
+        "' rows='3'>" +
+        response.questions[index].answer +
+        "</textarea></div>"
+    );
+  }
+});
 
 function urlify(text) {
   let urlRegex = /(https?:\/\/[^\s]+)/g;

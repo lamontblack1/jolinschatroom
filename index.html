@@ -76,6 +76,7 @@
         #btnSend,
         #btnSendText,
         #btnToDo,
+        #btnPat,
         .toDoItem,
         .to-do-item {
             background-color: #031D44;
@@ -99,12 +100,34 @@
 
         }
 
+        #patWrapper {
+            position: fixed;
+            /* background: linear-gradient(180deg, rgba(0, 129, 175, 0.43) 13.02%, rgba(8, 126, 139, 0.3741) 64.58%, rgba(8, 126, 139, 0) 91.67%); */
+            background-color: #b9e5f6;
+            overflow: auto;
+            /* height: 100%; */
+            top: 55%;
+            width: 100%;
+            bottom: 0px;
+            z-index: 51;
+            padding: 5px 10px 5px 5px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
         #btnToDo {
             position: fixed;
             top: 10px;
             left: 5px;
             z-index: 101;
 
+        }
+
+        #btnPat {
+            position: fixed;
+            top: 10px;
+            right: 5px;
+            z-index: 101;
         }
 
         .card-header,
@@ -151,8 +174,8 @@
         <input type="text" id="toDoInput" placeholder="Add To Do">
         <button class="toDoItem" id="btnAddToDo">Add It! <Doc></Doc></button>
         <hr>
-        <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfn5t2MVTYvFpc60rqUEo8lu-N1O681nG8HUiXUPWRskDlKcQ/viewform?usp=sf_link"
-            target="_blank"> Pay Attention Sheet</a></p>
+        <!-- <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfn5t2MVTYvFpc60rqUEo8lu-N1O681nG8HUiXUPWRskDlKcQ/viewform?usp=sf_link"
+            target="_blank"> Pay Attention Sheet</a></p> -->
         <p><a href="https://jworg.zoom.us/j/81916490451?pwd=SWtZZEhSQjRwaXFuVFR6ZVdMbGltZz09"
                 target="_blank"> Meetings</a></p>
         <p><a href="https://us02web.zoom.us/j/83788180808?pwd=WkpFcE1nLythQnppaG5iK3BaV29qdz09"
@@ -163,9 +186,25 @@
         
     </div>
 
+    <div id="patWrapper">
+    
+        <form id="patQuestions">
+            <h3 class="text-center" id="patDates">dates</h3>
+            <h3 class="text-center" id="chapters">chapters</h3>
+            <div id="questionsWrapper">
+                
+                
+            </div>
+    
+    
+            <button type="submit" id="submitPat" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    
+    </div>
+
     <div id="theTop" class="container">
         <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnToDo">To Do and Links</button>
-
+        <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnPat">PAT</button>
 
         <div class="row">
             <div class="col-md-3"></div>
