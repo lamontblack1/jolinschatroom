@@ -108,7 +108,7 @@ $("#btnPat").on("click", function () {
     patVisible = !patVisible;
   } else {
     $("#patWrapper").css("visibility", "visible");
-    $("#patWrapper").show("drop", { direction: "up" });
+    $("#patWrapper").show("drop", { direction: "down" });
     patVisible = !patVisible;
   }
 });
@@ -349,6 +349,7 @@ $("#submitPat").on("click", function (event) {
   });
 });
 
+//get the pat sheet info from my api
 $.ajax({
   url: patURL,
   method: "GET"
