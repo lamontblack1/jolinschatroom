@@ -334,7 +334,9 @@ var patURL = "https://jolin-pat-api.herokuapp.com/api/pat";
 let pat;
 $("#submitPat").on("click", function (event) {
   event.preventDefault();
-  for (let i = 0; i < 13; i++) {
+  pat.chapters = $("#chapters").val();
+  pat.dates = $("#patDates").val();
+  for (let i = 0; i < 9; i++) {
     pat.questions[i].question = $("#question" + i).val();
     pat.questions[i].answer = $("#answer" + i).val();
   }
@@ -342,7 +344,7 @@ $("#submitPat").on("click", function (event) {
 
   $.post(patURL, pat).then(function (data) {
     if (data === true) {
-      alert("Your answers have been submitted!");
+      alert("Your answers have been saved!");
     }
   });
 });
@@ -357,7 +359,7 @@ $.ajax({
   $("#chapters").val(response.chapters);
   $("#patDates").val(response.dates);
 
-  for (let index = 0; index < 13; index++) {
+  for (let index = 0; index < 9; index++) {
     $("#questionsWrapper").append(
       "<div class='form-group'>" +
         // "<label for='question" +
@@ -365,7 +367,7 @@ $.ajax({
         // "'>Question</label>" +
         "<textarea class='form-control patQuestion' id='question" +
         index +
-        "' rows='3'>" +
+        "' rows='2'>" +
         response.questions[index].question +
         "</textarea></div>" +
         "<div class='form-group'>" +
@@ -374,7 +376,7 @@ $.ajax({
         // "'>Answer</label>" +
         "<textarea class='form-control' id='answer" +
         index +
-        "' rows='3'>" +
+        "' rows='2'>" +
         response.questions[index].answer +
         "</textarea></div>"
     );
