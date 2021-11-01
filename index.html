@@ -130,6 +130,11 @@
             z-index: 101;
         }
 
+        .patQuestion, #chapters, #patDates {
+            font-weight: bold;
+            background-color: lightgray;
+        }
+
         .card-header,
         .card-body {
             /* font-family: 'Indie Flower', cursive; */
@@ -189,8 +194,10 @@
     <div id="patWrapper">
     
         <form id="patQuestions">
-            <h3 class="text-center" id="patDates">dates</h3>
-            <h3 class="text-center" id="chapters">chapters</h3>
+            <input class="form-control form-control-lg text-center" id="patDates" type="text"
+                aria-label=".form-control-lg">
+                <input class="form-control form-control-lg text-center mb-2" id="chapters" type="text" aria-label=".form-control-lg">
+            
             <div id="questionsWrapper">
                 
                 
