@@ -372,7 +372,7 @@ $.ajax({
   method: "GET"
 }).then(function (response) {
   console.log(response);
-  pat = response[0];
+  pat = response;
 
   $("#chapters").val(pat.chapters);
   $("#patDates").val(pat.dates);
