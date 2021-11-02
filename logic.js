@@ -355,10 +355,10 @@ $.ajax({
   method: "GET"
 }).then(function (response) {
   console.log(response);
-  pat = response;
+  pat = response[0];
 
-  $("#chapters").val(response.chapters);
-  $("#patDates").val(response.dates);
+  $("#chapters").val(pat.chapters);
+  $("#patDates").val(pat.dates);
 
   for (let index = 0; index < 9; index++) {
     $("#questionsWrapper").append(
@@ -369,7 +369,7 @@ $.ajax({
         "<textarea class='form-control patQuestion' id='question" +
         index +
         "' rows='2'>" +
-        response.questions[index].question +
+        pat.questions[index].question +
         "</textarea></div>" +
         "<div class='form-group'>" +
         // "<label for='answer" +
@@ -378,7 +378,7 @@ $.ajax({
         "<textarea class='form-control' id='answer" +
         index +
         "' rows='2'>" +
-        response.questions[index].answer +
+        pat.questions[index].answer +
         "</textarea></div>"
     );
   }
