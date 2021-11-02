@@ -342,11 +342,28 @@ $("#submitPat").on("click", function (event) {
   }
   console.log(pat);
 
-  $.post(patURL, pat).then(function (data) {
-    if (data === true) {
-      alert("Your answers have been saved!");
+  $.ajax({
+    url: patURL,
+    cache: false,
+    method: "POST",
+    crossDomain: true,
+    data: pat,
+    headers: {
+      "Access-Control-Allow-Origin":
+        "https://lamontblack1.github.io/jolinschatroom"
+    },
+    success: function (response) {
+      if (response === true) {
+        alert("Your answers have been saved!");
+      }
     }
   });
+
+  //   $.post(patURL, pat).then(function (data) {
+  //     if (data === true) {
+  //       alert("Your answers have been saved!");
+  //     }
+  //   });
 });
 
 //get the pat sheet info from my api
