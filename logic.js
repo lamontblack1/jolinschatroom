@@ -21,6 +21,7 @@ let db = firebase.database();
 // let playerInfoRef = db.ref("/players")
 let messageListRef = db.ref("/Jolin/messages");
 let toDoRef = db.ref("/Jolin/toDo");
+const patRef = db.ref("/Jolin/pat");
 
 //set up connection monitor and read connections
 let connectionsListRef = db.ref("Jolin/connections");
@@ -330,52 +331,12 @@ messageListRef.limitToLast(10).on(
   }
 );
 
-var patURL = "https://jolin-pat-api.herokuapp.com/api/pat";
-let pat;
-$("#submitPat").on("click", function (event) {
-  event.preventDefault();
-  pat.chapters = $("#chapters").val();
-  pat.dates = $("#patDates").val();
-  for (let i = 0; i < 9; i++) {
-    pat.questions[i].question = $("#question" + i).val();
-    pat.questions[i].answer = $("#answer" + i).val();
-  }
-  console.log(pat);
-
-  // $.ajax({
-  //   url: patURL,
-  //   cache: false,
-  //   method: "POST",
-  //   crossDomain: true,
-  //   data: pat,
-  //   headers: {
-  //     "Access-Control-Allow-Origin":
-  //       "https://lamontblack1.github.io/jolinschatroom"
-  //   },
-  //   success: function (response) {
-  //     if (response === true) {
-  //       alert("Your answers have been saved!");
-  //     }
-  //   }
-  // });
-
-  $.post(patURL, pat).then(function (data) {
-    if (data === true) {
-      alert("Your answers have been saved!");
-    }
-  });
-});
-
-//get the pat sheet info from my api
-$.ajax({
-  url: patURL,
-  method: "GET"
-}).then(function (response) {
-  console.log(response);
-  pat = response;
+patRef.on("value", (snapshot) => {
+  pat = snapshot.val();
 
   $("#chapters").val(pat.chapters);
   $("#patDates").val(pat.dates);
+  $("#questionsWrapper").empty();
 
   for (let index = 0; index < 9; index++) {
     $("#questionsWrapper").append(
@@ -400,6 +361,54 @@ $.ajax({
     );
   }
 });
+
+var patURL = "https://jolin-pat-api.herokuapp.com/api/pat";
+
+let pat;
+$("#submitPat").on("click", function (event) {
+  event.preventDefault();
+  pat.chapters = $("#chapters").val();
+  pat.dates = $("#patDates").val();
+  for (let i = 0; i < 9; i++) {
+    pat.questions[i].question = $("#question" + i).val();
+    pat.questions[i].answer = $("#answer" + i).val();
+  }
+  // console.log(pat);
+  patRef.set(pat);
+
+  // $.ajax({
+  //   url: patURL,
+  //   cache: false,
+  //   method: "POST",
+  //   crossDomain: true,
+  //   data: pat,
+  //   headers: {
+  //     "Access-Control-Allow-Origin":
+  //       "https://lamontblack1.github.io/jolinschatroom"
+  //   },
+  //   success: function (response) {
+  //     if (response === true) {
+  //       alert("Your answers have been saved!");
+  //     }
+  //   }
+  // });
+
+  //replaced with firebase, but was working as is
+  // $.post(patURL, pat).then(function (data) {
+  //   if (data === true) {
+  //     alert("Your answers have been saved!");
+  //   }
+  // });
+});
+
+//get the pat sheet info from my api, replaced with firebase
+// $.ajax({
+//   url: patURL,
+//   method: "GET"
+// }).then(function (response) {
+//   pat = response;
+
+// });
 
 function urlify(text) {
   let urlRegex = /(https?:\/\/[^\s]+)/g;
