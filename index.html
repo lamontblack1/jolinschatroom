@@ -77,6 +77,7 @@
         #btnSendText,
         #btnToDo,
         #btnPat,
+        #btnFsReport,
         .toDoItem,
         .to-do-item {
             background-color: #031D44;
@@ -97,6 +98,19 @@
             border: 1px solid gray;
             border-radius: 5px;
             /* visibility: hidden; */
+
+        }
+
+        #fsReportWrapper {
+            position: fixed;
+            /* background: linear-gradient(180deg, rgba(0, 129, 175, 0.43) 13.02%, rgba(8, 126, 139, 0.3741) 64.58%, rgba(8, 126, 139, 0) 91.67%); */
+            background-color: #b9e5f6;
+            top: 60px;
+            z-index: 52;
+            padding: 5px 10px 5px 5px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            visibility: hidden;
 
         }
 
@@ -127,6 +141,13 @@
             position: fixed;
             top: 10px;
             right: 5px;
+            z-index: 101;
+        }
+
+        #btnFsReport {
+            position: fixed;
+            top: 10px;
+            left: 150px;
             z-index: 101;
         }
 
@@ -209,8 +230,77 @@
     
     </div>
 
+    <div id="fsReportWrapper">
+        <form id="fsReport">
+            <div class="form-group row">
+                <label for="carried" class="col-sm-3 col-form-label">Carried from last month:</label>
+                <div class="col-sm-2">
+                    <select class="form-control" id="carried" value=0>
+                    <option>0</option>
+                    <option>.25</option>
+                    <option>.5</option>
+                    <option>.75</option>
+                    </select>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Hours</th>
+                        <th scope="col">Plc</th>
+                        <th scope="col">RV</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="form-control" id="date0"></td>
+                        <td><input type="number" class="form-control" id="hours0" value=0></td>
+                        <td><input type="number" class="form-control" id="plc0" value=0></td>
+                        <td><input type="number" class="form-control" id="rv0" value=0></td>
+                    </tr>
+                    <tr>
+                        <th><input type="text" class="form-control" id="date1"></th>
+                        <td><input type="number" class="form-control" id="hours1" value=0></td>
+                        <td><input type="text" class="form-control" id="plc1" value=0></td>
+                        <td><input type="text" class="form-control" id="rv1" value=0></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control" id="date2"></td>
+                        <td><input type="number" class="form-control" id="hours2" value=0></td>
+                        <td><input type="number" class="form-control" id="plc2" value=0></td>
+                        <td><input type="number" class="form-control" id="rv2" value=0></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control" id="date3"></td>
+                        <td><input type="number" class="form-control" id="hours3" value=0></td>
+                        <td><input type="number" class="form-control" id="plc3" value=0></td>
+                        <td><input type="number" class="form-control" id="rv3" value=0></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control" id="date4"></td>
+                        <td><input type="number" class="form-control" id="hours4" value=0></td>
+                        <td><input type="number" class="form-control" id="plc4" value=0></td>
+                        <td><input type="number" class="form-control" id="rv4" value=0></td>
+                    </tr>
+                    <tr>
+                        <td>Totals:</td>
+                        <td class="text-center" id="hoursTotal" value=0></td>
+                        <td class="text-center" id="plcTotal" value=0></td>
+                        <td class="text-center" id="rvTotal" value=0></td>
+                        
+                    </tr>
+                   
+                </tbody>
+            </table>
+
+            <button id="saveFsReport" class="btn btn-primary mb-2">Save</button>
+        </form>
+    </div>
+
     <div id="theTop" class="container">
         <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnToDo">To Do and Links</button>
+        <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnFsReport">FS</button>
         <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnPat">PAT</button>
 
         <div class="row">

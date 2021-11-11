@@ -19,9 +19,10 @@ let db = firebase.database();
 
 //connections to store player info and messages and notifications
 // let playerInfoRef = db.ref("/players")
-let messageListRef = db.ref("/Jolin/messages");
-let toDoRef = db.ref("/Jolin/toDo");
+const messageListRef = db.ref("/Jolin/messages");
+const toDoRef = db.ref("/Jolin/toDo");
 const patRef = db.ref("/Jolin/pat");
+const fsReportRef = db.ref("/Jolin/fsReport");
 
 //set up connection monitor and read connections
 let connectionsListRef = db.ref("Jolin/connections");
@@ -35,6 +36,10 @@ let dingOn = true;
 var audioElement = document.createElement("audio");
 var typingTimeout;
 let aryToDo = [];
+let fsReport = {
+  carried: 0,
+  entries: []
+};
 
 // Set it's source to the location
 audioElement.setAttribute("src", "./ding1.mp3");
@@ -88,6 +93,7 @@ $("#btnDing").on("click", function () {
 
 let toDoVisible = false;
 let patVisible = false;
+let fsReportVisible = false;
 $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
 $("#patWrapper").hide("drop", { direction: "down" }, "slow");
 $("#btnToDo").on("click", function () {
@@ -112,6 +118,15 @@ $("#btnPat").on("click", function () {
     $("#patWrapper").show("drop", { direction: "down" });
     patVisible = !patVisible;
   }
+});
+
+$("#btnFsReport").on("click", function () {
+  if (fsReportVisible) {
+    $("#fsReportWrapper").css("visibility", "hidden");
+  } else {
+    $("#fsReportWrapper").css("visibility", "visible");
+  }
+  fsReportVisible = !fsReportVisible;
 });
 
 $("#btnSend").on("click", function () {
@@ -399,6 +414,64 @@ $("#submitPat").on("click", function (event) {
   //     alert("Your answers have been saved!");
   //   }
   // });
+});
+
+$("#saveFsReport").on("click", function (event) {
+  event.preventDefault();
+  fsReport.entries = [];
+  fsReport.carried = $("#carried").val();
+  for (let i = 0; i < 5; i++) {
+    const value1 = $("#date" + i).val();
+    const value2 = $("#hours" + i).val();
+    const value3 = $("#plc" + i).val();
+    const value4 = $("#rv" + i).val();
+    const key1 = "date" + i;
+    const key2 = "hours" + i;
+    const key3 = "plc" + i;
+    const key4 = "rv" + i;
+    let entryObject = {
+      [key1]: value1,
+      [key2]: value2,
+      [key3]: value3,
+      [key4]: value4
+    };
+    fsReport.entries.push(entryObject);
+  }
+  fsReportRef.set(fsReport);
+});
+
+fsReportRef.on("value", (snapshot) => {
+  fsReport = snapshot.val();
+  $("#carried").val(fsReport.carried);
+
+  for (let i = 0; i < 5; i++) {
+    $("#date" + i).val(fsReport.entries[i]["date" + i]);
+    $("#hours" + i).val(fsReport.entries[i]["hours" + i]);
+    $("#plc" + i).val(fsReport.entries[i]["plc" + i]);
+    $("#rv" + i).val(fsReport.entries[i]["rv" + i]);
+  }
+  $("#hoursTotal").text(
+    parseFloat(fsReport.carried) +
+      parseFloat(fsReport.entries[0].hours0) +
+      parseFloat(fsReport.entries[1].hours1) +
+      parseFloat(fsReport.entries[2].hours2) +
+      parseFloat(fsReport.entries[3].hours3) +
+      parseFloat(fsReport.entries[4].hours4)
+  );
+  $("#plcTotal").text(
+    parseFloat(fsReport.entries[0].plc0) +
+      parseFloat(fsReport.entries[1].plc1) +
+      parseFloat(fsReport.entries[2].plc2) +
+      parseFloat(fsReport.entries[3].plc3) +
+      parseFloat(fsReport.entries[4].plc4)
+  );
+  $("#rvTotal").text(
+    parseFloat(fsReport.entries[0].rv0) +
+      parseFloat(fsReport.entries[1].rv1) +
+      parseFloat(fsReport.entries[2].rv2) +
+      parseFloat(fsReport.entries[3].rv3) +
+      parseFloat(fsReport.entries[4].rv4)
+  );
 });
 
 //get the pat sheet info from my api, replaced with firebase
