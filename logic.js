@@ -425,15 +425,12 @@ $("#saveFsReport").on("click", function (event) {
     const value2 = $("#hours" + i).val();
     const value3 = $("#plc" + i).val();
     const value4 = $("#rv" + i).val();
-    const key1 = "date" + i;
-    const key2 = "hours" + i;
-    const key3 = "plc" + i;
-    const key4 = "rv" + i;
+
     let entryObject = {
-      [key1]: value1,
-      [key2]: value2,
-      [key3]: value3,
-      [key4]: value4
+      date: value1,
+      hours: value2,
+      plc: value3,
+      rv: value4
     };
     fsReport.entries.push(entryObject);
   }
@@ -445,32 +442,32 @@ fsReportRef.on("value", (snapshot) => {
   $("#carried").val(fsReport.carried);
 
   for (let i = 0; i < 5; i++) {
-    $("#date" + i).val(fsReport.entries[i]["date" + i]);
-    $("#hours" + i).val(fsReport.entries[i]["hours" + i]);
-    $("#plc" + i).val(fsReport.entries[i]["plc" + i]);
-    $("#rv" + i).val(fsReport.entries[i]["rv" + i]);
+    $("#date" + i).val(fsReport.entries[i].date);
+    $("#hours" + i).val(fsReport.entries[i].hours);
+    $("#plc" + i).val(fsReport.entries[i].plc);
+    $("#rv" + i).val(fsReport.entries[i].rv);
   }
   $("#hoursTotal").text(
     parseFloat(fsReport.carried) +
-      parseFloat(fsReport.entries[0].hours0) +
-      parseFloat(fsReport.entries[1].hours1) +
-      parseFloat(fsReport.entries[2].hours2) +
-      parseFloat(fsReport.entries[3].hours3) +
-      parseFloat(fsReport.entries[4].hours4)
+      parseFloat(fsReport.entries[0].hours) +
+      parseFloat(fsReport.entries[1].hours) +
+      parseFloat(fsReport.entries[2].hours) +
+      parseFloat(fsReport.entries[3].hours) +
+      parseFloat(fsReport.entries[4].hours)
   );
   $("#plcTotal").text(
-    parseFloat(fsReport.entries[0].plc0) +
-      parseFloat(fsReport.entries[1].plc1) +
-      parseFloat(fsReport.entries[2].plc2) +
-      parseFloat(fsReport.entries[3].plc3) +
-      parseFloat(fsReport.entries[4].plc4)
+    parseFloat(fsReport.entries[0].plc) +
+      parseFloat(fsReport.entries[1].plc) +
+      parseFloat(fsReport.entries[2].plc) +
+      parseFloat(fsReport.entries[3].plc) +
+      parseFloat(fsReport.entries[4].plc)
   );
   $("#rvTotal").text(
-    parseFloat(fsReport.entries[0].rv0) +
-      parseFloat(fsReport.entries[1].rv1) +
-      parseFloat(fsReport.entries[2].rv2) +
-      parseFloat(fsReport.entries[3].rv3) +
-      parseFloat(fsReport.entries[4].rv4)
+    parseFloat(fsReport.entries[0].rv) +
+      parseFloat(fsReport.entries[1].rv) +
+      parseFloat(fsReport.entries[2].rv) +
+      parseFloat(fsReport.entries[3].rv) +
+      parseFloat(fsReport.entries[4].rv)
   );
 });
 
