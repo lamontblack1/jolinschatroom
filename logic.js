@@ -79,6 +79,7 @@ $("#uploadPic").on("click", function () {
       // .child("images/" + selectedFile.name)
       .getDownloadURL()
       .then((url) => {
+        $("#toDoWrapper").css("visibility", "hidden");
         // `url` is the download URL for 'images/stars.jpg'
 
         // This can be downloaded directly:
@@ -342,7 +343,7 @@ messageListRef.limitToLast(10).on(
           "<div class='card-body py-1 pl-2'>" +
           "<img src='" +
           snapshot.val().URL +
-          "' class='img-fluid' width='80%'>" +
+          "' class='img-fluid' width='90%'>" +
           //  "<p class='card-title'>" +
           //     msgMessage +
           //     "</p>" +
