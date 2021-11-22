@@ -15,7 +15,11 @@ firebase.initializeApp(firebaseConfig);
 
 // Create a variable to reference the database
 let db = firebase.database();
-//add a notification that the player connected
+
+// Create a root reference
+var storageRef = firebase.storage().ref();
+
+//************************************************************
 
 //connections to store player info and messages and notifications
 // let playerInfoRef = db.ref("/players")
@@ -23,6 +27,7 @@ const messageListRef = db.ref("/Jolin/messages");
 const toDoRef = db.ref("/Jolin/toDo");
 const patRef = db.ref("/Jolin/pat");
 const fsReportRef = db.ref("/Jolin/fsReport");
+const imageListRef = db.ref("/Jolin/images");
 
 //set up connection monitor and read connections
 let connectionsListRef = db.ref("Jolin/connections");
@@ -45,20 +50,56 @@ let fsReport = {
 audioElement.setAttribute("src", "./ding1.mp3");
 let myScreenName = "";
 
-// tinymce.init({
-//   selector: "#messageInput",
-//   plugins: "emoticons",
-//   toolbar: "emoticons",
-//   toolbar_location: "top",
-//   menubar: true
-// });
-
 $("#messageInput").keyup(function () {
   if (myScreenName !== "") {
     db.ref("/Jolin/typing").push({
       personTyping: myScreenName
     });
   }
+});
+
+$("#uploadPic").on("click", function () {
+  //try to upload a picture
+  // const f = new File(
+  //   ["C:Users/ct/Desktop/IMG_0146.jpg"],
+  //   "C:Users/ct/Desktop/IMG_0146.jpg"
+  // );
+  const myName = $("#nameInput").val().trim();
+  const selectedFile = document.getElementById("input").files[0];
+
+  // Create a reference to 'mountains.jpg'
+  // var picRef = storageRef.child(selectedFile.name);
+
+  // Create a reference to 'images/mountains.jpg'
+  var picImageRef = storageRef.child("images/" + selectedFile.name);
+
+  picImageRef.put(selectedFile).then((snapshot) => {
+    console.log("uploaded!");
+    picImageRef
+      // .child("images/" + selectedFile.name)
+      .getDownloadURL()
+      .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+
+        // This can be downloaded directly:
+        // var xhr = new XMLHttpRequest();
+        // xhr.responseType = "blob";
+        // xhr.onload = (event) => {
+        //   var blob = xhr.response;
+        // };
+        // xhr.open("GET", url);
+        // xhr.send();
+
+        // Or inserted into an <img> element
+
+        messageListRef.push({
+          playerName: myName,
+          message: "picToPost",
+          messageTime: firebase.database.ServerValue.TIMESTAMP,
+          URL: url
+        });
+      });
+  });
 });
 
 db.ref("/Jolin/typing").on("child_added", function (snap) {
@@ -94,6 +135,7 @@ $("#btnDing").on("click", function () {
 let toDoVisible = false;
 let patVisible = false;
 let fsReportVisible = false;
+let justDeleted = false;
 $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
 $("#patWrapper").hide("drop", { direction: "down" }, "slow");
 $("#btnToDo").on("click", function () {
@@ -118,6 +160,14 @@ $("#btnPat").on("click", function () {
     $("#patWrapper").show("drop", { direction: "down" });
     patVisible = !patVisible;
   }
+});
+
+$("body").on("click", "button.btnDelete", function () {
+  const msgKey = $(this).attr("data");
+  db.ref("/Jolin/messages/" + msgKey).remove();
+  $("#" + msgKey).remove();
+  //keep from firing child added event and redisplaying previous message
+  justDeleted = true;
 });
 
 $("#btnFsReport").on("click", function () {
@@ -264,81 +314,129 @@ function pushMessage(player, messageToPost) {
 messageListRef.limitToLast(10).on(
   "child_added",
   function (snapshot) {
-    // console.log(snapshot.val());
-    // console.log(snapshot.val().playerName);
-    // console.log(snapshot.val().message);
-    msgIdCounter = msgIdCounter + 1;
-    let dateVal = snapshot.val().messageTime;
-    // let msgTimeStamp = moment(dateVal).fromNow(false)
-    let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
-    // console.log(msgTimeStamp);
-    let msgPlayerName = snapshot.val().playerName;
-    msgPlayerName = msgPlayerName.toLowerCase().trim();
-    let msgMessage = snapshot.val().message;
-    //this can help add a picture
-    let imgLine =
-      "<img src='./images/" + msgPlayerName + ".jpg' alt='...'></img>";
-
-    if (msgPlayerName === $("#nameInput").val().toLowerCase()) {
+    if (snapshot.val().URL) {
+      let dateVal = snapshot.val().messageTime;
+      // let msgTimeStamp = moment(dateVal).fromNow(false)
+      let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
+      // console.log(msgTimeStamp);
+      let msgPlayerName = snapshot.val().playerName;
+      msgPlayerName = msgPlayerName.toLowerCase().trim();
+      //this can help add a picture
+      let imgLine =
+        "<img src='./images/" +
+        msgPlayerName +
+        ".jpg' class='userPic' alt='...'></img>";
+      //This is where you prepend the card with the picture from the URL
       $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
-          "<div class='card' id='message" +
-          msgIdCounter +
+          "<div class='card' id='" +
+          snapshot.key +
           "' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" +
           imgLine +
           msgPlayerName +
           "  <small class='text-muted'>" +
           msgTimeStamp +
-          "</small></div>" +
-          "<div class='card-body py-1 pl-2'><p class='card-title'>" +
-          msgMessage +
-          "</p>" +
+          "</small><button class='btnDelete btn btn-outline-secondary font-weight-bold mb-1' type='button' data='" +
+          snapshot.key +
+          "'>x</button></div>" +
+          "<div class='card-body py-1 pl-2'>" +
+          "<img src='" +
+          snapshot.val().URL +
+          "' class='img-fluid' width='80%'>" +
+          //  "<p class='card-title'>" +
+          //     msgMessage +
+          //     "</p>" +
           "</div></div>" +
           "</div>" +
           "</div>"
       );
-    } else if ($("#nameInput").val() == "") {
-      $("#messagesBox").prepend(
-        "<div class='row mb-1'><div class='col-1'></div><div class='col-10'>" +
-          "<div class='card' id='message" +
-          msgIdCounter +
-          "' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" +
-          imgLine +
-          msgPlayerName +
-          "  <small class='text-muted'>" +
-          msgTimeStamp +
-          "</small></div>" +
-          "<div class='card-body py-1 pl-2'><p class='card-title'>" +
-          msgMessage +
-          "</p>" +
-          "</div></div>" +
-          "</div>" +
-          "</div>"
-      );
-    } else {
-      if (dingOn) {
-        audioElement.play();
-      }
 
-      $("#messagesBox").prepend(
-        "<div class='row mb-1'><div class='col-10' style='float: left;'>" +
-          "<div class='card' id='message" +
-          msgIdCounter +
-          "' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
-          imgLine +
-          msgPlayerName +
-          "  <small class='text-muted'>" +
-          msgTimeStamp +
-          "</small></div>" +
-          "<div class='card-body py-1 pl-2'><p class='card-title'>" +
-          msgMessage +
-          "</p>" +
-          "</div></div>" +
-          "</div>" +
-          "</div>"
-      );
+      // var img = document.getElementById("myimg");
+      // img.setAttribute("src", url);
+    } else if (!justDeleted) {
+      // console.log(snapshot.key);
+      // console.log(snapshot.val().playerName);
+      // console.log(snapshot.val().message);
+      msgIdCounter = msgIdCounter + 1;
+      let dateVal = snapshot.val().messageTime;
+      // let msgTimeStamp = moment(dateVal).fromNow(false)
+      let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
+      // console.log(msgTimeStamp);
+      let msgPlayerName = snapshot.val().playerName;
+      msgPlayerName = msgPlayerName.toLowerCase().trim();
+      let msgMessage = snapshot.val().message;
+      //this can help add a picture
+      let imgLine =
+        "<img src='./images/" +
+        msgPlayerName +
+        ".jpg' class='userPic' alt='...'></img>";
+
+      if (msgPlayerName === $("#nameInput").val().toLowerCase()) {
+        $("#messagesBox").prepend(
+          "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
+            "<div class='card' id='" +
+            snapshot.key +
+            "' style='background-color: #DABFFF;'><div class='card-header p-1 pl-2'>" +
+            imgLine +
+            msgPlayerName +
+            "  <small class='text-muted'>" +
+            msgTimeStamp +
+            "</small><button class='btnDelete btn btn-outline-secondary font-weight-bold mb-1' type='button' data='" +
+            snapshot.key +
+            "'>x</button></div>" +
+            "<div class='card-body py-1 pl-2'><p class='card-title'>" +
+            msgMessage +
+            "</p>" +
+            "</div></div>" +
+            "</div>" +
+            "</div>"
+        );
+      } else if ($("#nameInput").val() == "") {
+        $("#messagesBox").prepend(
+          "<div class='row mb-1'><div class='col-1'></div><div class='col-10'>" +
+            "<div class='card' id='" +
+            snapshot.key +
+            "' style='background-color: #C49BBB;'><div class='card-header p-1 pl-2'>" +
+            imgLine +
+            msgPlayerName +
+            "  <small class='text-muted'>" +
+            msgTimeStamp +
+            "</small><button class='btnDelete btn btn-outline-secondary font-weight-bold mb-1' type='button' data='" +
+            snapshot.key +
+            "'>x</button></div>" +
+            "<div class='card-body py-1 pl-2'><p class='card-title'>" +
+            msgMessage +
+            "</p>" +
+            "</div></div>" +
+            "</div>" +
+            "</div>"
+        );
+      } else {
+        if (dingOn) {
+          audioElement.play();
+        }
+
+        $("#messagesBox").prepend(
+          "<div class='row mb-1'><div class='col-10' style='float: left;'>" +
+            "<div class='card' id='message" +
+            msgIdCounter +
+            "' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
+            imgLine +
+            msgPlayerName +
+            "  <small class='text-muted'>" +
+            msgTimeStamp +
+            "</small></div>" +
+            "<div class='card-body py-1 pl-2'><p class='card-title'>" +
+            msgMessage +
+            "</p>" +
+            "</div></div>" +
+            "</div>" +
+            "</div>"
+        );
+      }
+      $("#message" + msgIdCounter).effect("shake");
     }
-    $("#message" + msgIdCounter).effect("shake");
+    justDeleted = false;
     // Handle the errors
   },
   function (errorObject) {

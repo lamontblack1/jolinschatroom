@@ -14,6 +14,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <!-- Specific Firebase products we want (Database) -->
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <!-- firebase storage -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
     <!-- moment.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <!-- Google fonts -->
@@ -52,7 +54,7 @@
             color: #c49bbb;
         }
 
-        img {
+        .userPic, #typingGif {
             max-height: 50px;
             margin-right: 5px;
         }
@@ -78,12 +80,17 @@
         #btnToDo,
         #btnPat,
         #btnFsReport,
+        .btnDelete,
         .toDoItem,
-        .to-do-item {
+        .to-do-item,
+        .upload {
             background-color: #031D44;
             color: #c49bbb;
         }
 
+        .btnDelete {
+            float: right;
+        }
         .to-do-item {
             margin: 0 5px 5px 0;
         }
@@ -207,7 +214,7 @@
         <p><a href="https://us02web.zoom.us/j/83788180808?pwd=WkpFcE1nLythQnppaG5iK3BaV29qdz09"
                     target="_blank"> Saturday Field Service</a></p>
         <p><a href="https://jworg.zoom.us/j/83721514044?pwd=VjFxalZPTml6NGpjOE5sekZrQTdlQT09"
-                        target="_blank"> 3rd Saturday Field Service</a></p>
+                        target="_blank"> 3rd Saturday & weekday Field Service</a></p>
         <p><a href="https://www.jw.org/en/library/videos/#en/categories/StudioNewsReports" target="_black">"What's new" videos</a></p>
         
     </div>
@@ -303,6 +310,8 @@
         <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnFsReport">FS</button>
         <button class="btn btn-outline-secondary font-weight-bold mb-1" type="button" id="btnPat">PAT</button>
 
+        <input type="file" class="upload" id="input">
+        <button  class='upload btn btn-outline-secondary font-weight-bold mb-1' type='button' id="uploadPic" class="upload">Upload</button>
         <div class="row">
             <div class="col-md-3"></div>
             <div id="userInfoDiv" class="col-md-6 text-center">
