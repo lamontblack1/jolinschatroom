@@ -41,6 +41,7 @@ let dingOn = true;
 var audioElement = document.createElement("audio");
 var typingTimeout;
 let aryToDo = [];
+let messagesToDelete = [];
 let fsReport = {
   carried: 0,
   entries: []
@@ -121,6 +122,10 @@ function makeTypingGifVisible() {
 
 window.onbeforeunload = function (event) {
   db.ref("/Jolin/typing").remove();
+  for (let i = 0; i < messagesToDelete.length; i++) {
+    const msgKey = messagesToDelete[i];
+    db.ref("/Jolin/messages/" + msgKey).remove();
+  }
 };
 
 $("#btnDing").on("click", function () {
@@ -165,10 +170,8 @@ $("#btnPat").on("click", function () {
 
 $("body").on("click", "button.btnDelete", function () {
   const msgKey = $(this).attr("data");
-  db.ref("/Jolin/messages/" + msgKey).remove();
+  messagesToDelete.push(msgKey);
   $("#" + msgKey).remove();
-  //keep from firing child added event and redisplaying previous message
-  justDeleted = true;
 });
 
 $("#btnFsReport").on("click", function () {
@@ -354,7 +357,7 @@ messageListRef.limitToLast(10).on(
 
       // var img = document.getElementById("myimg");
       // img.setAttribute("src", url);
-    } else if (!justDeleted) {
+    } else {
       // console.log(snapshot.key);
       // console.log(snapshot.val().playerName);
       // console.log(snapshot.val().message);
@@ -437,7 +440,6 @@ messageListRef.limitToLast(10).on(
       }
       $("#message" + msgIdCounter).effect("shake");
     }
-    justDeleted = false;
     // Handle the errors
   },
   function (errorObject) {
