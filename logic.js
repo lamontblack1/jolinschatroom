@@ -272,7 +272,7 @@ toDoRef.on("value", function (snap) {
   for (let i = 0; i < aryToDo.length; i++) {
     const element = aryToDo[i];
     $("#toDoList").prepend(
-      "<button class='to-do-item' id='" +
+      "<button class='btn btn-outline-secondary to-do-item' id='" +
         i +
         "'>x</button><span>" +
         element +
