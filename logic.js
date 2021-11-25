@@ -51,6 +51,12 @@ let fsReport = {
 audioElement.setAttribute("src", "./ding1.mp3");
 let myScreenName = "";
 
+//allow file input to have a file pasted into it
+window.addEventListener("paste", (e) => {
+  const fileInput = document.getElementById("input");
+  fileInput.files = e.clipboardData.files;
+});
+
 $("#messageInput").keyup(function () {
   if (myScreenName !== "") {
     db.ref("/Jolin/typing").push({
@@ -93,7 +99,9 @@ $("#uploadPic").on("click", function () {
         // xhr.send();
 
         // Or inserted into an <img> element
-
+        //clear the file input
+        $("#input").val("");
+        //send message with the URL for the picture or file
         messageListRef.push({
           playerName: myName,
           message: "picToPost",
@@ -102,6 +110,20 @@ $("#uploadPic").on("click", function () {
         });
       });
   });
+});
+
+$("#btnDeleteOldPics").on("click", function () {
+  storageRef
+    .child("images")
+    .listAll()
+    .then(function (res) {
+      res.items.forEach(function (itemRef) {
+        itemRef.delete();
+        // itemRef.getDownloadURL().then(function (link) {
+        //   console.log(link);
+        // })
+      });
+    });
 });
 
 db.ref("/Jolin/typing").on("child_added", function (snap) {
@@ -143,7 +165,7 @@ let patVisible = false;
 let fsReportVisible = false;
 let justDeleted = false;
 $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
-$("#patWrapper").hide("drop", { direction: "down" }, "slow");
+// $("#patWrapper").hide("drop", { direction: "down" }, "slow");
 $("#btnToDo").on("click", function () {
   if (toDoVisible) {
     $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
@@ -158,14 +180,13 @@ $("#btnToDo").on("click", function () {
 
 $("#btnPat").on("click", function () {
   if (patVisible) {
-    $("#patWrapper").hide("drop", { direction: "down" }, "slow");
-    // $("#toDoWrapper").css("visibility", "hidden");
-    patVisible = !patVisible;
+    // $("#patWrapper").hide("drop", { direction: "down" }, "slow");
+    $("#patWrapper").css("visibility", "hidden");
   } else {
-    $("#patWrapper").css("visibility", "visible");
-    $("#patWrapper").show("drop", { direction: "down" });
-    patVisible = !patVisible;
+    $("#patWrapper").css("visibility", "visible"); //to use the animation this must be done first
+    // $("#patWrapper").show("drop", { direction: "down" });
   }
+  patVisible = !patVisible;
 });
 
 $("body").on("click", "button.btnDelete", function () {
@@ -318,18 +339,22 @@ function pushMessage(player, messageToPost) {
 messageListRef.limitToLast(10).on(
   "child_added",
   function (snapshot) {
+    msgIdCounter = msgIdCounter + 1;
+    let dateVal = snapshot.val().messageTime;
+    // let msgTimeStamp = moment(dateVal).fromNow(false)
+    let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
+    // console.log(msgTimeStamp);
+    let msgPlayerName = snapshot.val().playerName;
+    msgPlayerName = msgPlayerName.toLowerCase().trim();
+    let msgMessage = snapshot.val().message;
+    //this can help add a picture
+    let imgLine =
+      "<img src='./images/" +
+      msgPlayerName +
+      ".jpg' class='userPic' alt='...'></img>";
+
+    // if file or picture
     if (snapshot.val().URL) {
-      let dateVal = snapshot.val().messageTime;
-      // let msgTimeStamp = moment(dateVal).fromNow(false)
-      let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
-      // console.log(msgTimeStamp);
-      let msgPlayerName = snapshot.val().playerName;
-      msgPlayerName = msgPlayerName.toLowerCase().trim();
-      //this can help add a picture
-      let imgLine =
-        "<img src='./images/" +
-        msgPlayerName +
-        ".jpg' class='userPic' alt='...'></img>";
       //This is where you prepend the card with the picture from the URL
       $("#messagesBox").prepend(
         "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
@@ -355,26 +380,9 @@ messageListRef.limitToLast(10).on(
           "</div>"
       );
 
-      // var img = document.getElementById("myimg");
-      // img.setAttribute("src", url);
+      //put my own texts to the right
     } else {
-      // console.log(snapshot.key);
-      // console.log(snapshot.val().playerName);
-      // console.log(snapshot.val().message);
-      msgIdCounter = msgIdCounter + 1;
-      let dateVal = snapshot.val().messageTime;
-      // let msgTimeStamp = moment(dateVal).fromNow(false)
-      let msgTimeStamp = moment(dateVal).format("dddd hh:mma");
-      // console.log(msgTimeStamp);
-      let msgPlayerName = snapshot.val().playerName;
-      msgPlayerName = msgPlayerName.toLowerCase().trim();
-      let msgMessage = snapshot.val().message;
-      //this can help add a picture
-      let imgLine =
-        "<img src='./images/" +
-        msgPlayerName +
-        ".jpg' class='userPic' alt='...'></img>";
-
+      //handle first messages when page loads
       if (msgPlayerName === $("#nameInput").val().toLowerCase()) {
         $("#messagesBox").prepend(
           "<div class='row mb-1'><div class='col-2'></div><div class='col-10'>" +
@@ -415,6 +423,8 @@ messageListRef.limitToLast(10).on(
             "</div>" +
             "</div>"
         );
+
+        // put messages from others on the left
       } else {
         if (dingOn) {
           audioElement.play();
@@ -429,7 +439,9 @@ messageListRef.limitToLast(10).on(
             msgPlayerName +
             "  <small class='text-muted'>" +
             msgTimeStamp +
-            "</small></div>" +
+            "</small><button class='btnDelete btn btn-outline-secondary font-weight-bold mb-1' type='button' data='" +
+            snapshot.key +
+            "'>x</button></div>" +
             "<div class='card-body py-1 pl-2'><p class='card-title'>" +
             msgMessage +
             "</p>" +

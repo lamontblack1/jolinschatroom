@@ -8,8 +8,6 @@
     <!-- Bootstrap CDN-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    //for Boostrap file button
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js">
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Firebase Core JavaScript Link -->
@@ -137,6 +135,7 @@
             padding: 5px 10px 5px 5px;
             border: 1px solid gray;
             border-radius: 5px;
+            visibility: hidden;
         }
 
         #btnToDo {
@@ -160,6 +159,8 @@
             left: 150px;
             z-index: 101;
         }
+
+
 
         .patQuestion, #chapters, #patDates {
             font-weight: bold;
@@ -218,8 +219,8 @@
 
         
         <input type="file" class="upload" id="input">
-        <button class='upload btn btn-outline-secondary mb-1' type='button' id="uploadPic"
-            class="upload">Send</button>
+        <input class='mb-1' type='text' id="pastePic" placeholder="(Or Paste It Here)"></input>
+        <button class='upload btn btn-outline-secondary mb-1' type='button' id="uploadPic">Send</button>
 
         <!-- <input type="button" id="loadFileXml" value="loadXml" onclick="document.getElementById('file').click();" />
         <input type="file" style="display:none;" id="file" name="file" /> -->
@@ -246,12 +247,10 @@
                 <input class="form-control form-control-lg text-center mb-2" id="chapters" type="text" aria-label=".form-control-lg">
             
             <div id="questionsWrapper">
-                
-                
             </div>
     
-    
             <button type="submit" id="submitPat" class="btn btn-primary mb-2">Save</button>
+            <button class='btn btn-primary mb-1' type='button' id="btnDeleteOldPics" style="float: right;">Delete Old Pics</button>
         </form>
     
     </div>
