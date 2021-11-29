@@ -13,16 +13,13 @@ let msgIdCounter = 0;
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Create a variable to reference the database
+// Create a reference the database
 let db = firebase.database();
 
 // Create a root reference
 var storageRef = firebase.storage().ref();
 
 //************************************************************
-
-//connections to store player info and messages and notifications
-// let playerInfoRef = db.ref("/players")
 const messageListRef = db.ref("/Jolin/messages");
 const toDoRef = db.ref("/Jolin/toDo");
 const patRef = db.ref("/Jolin/pat");
@@ -35,8 +32,8 @@ let connectionsListRef = db.ref("Jolin/connections");
 // the client's connection state changes.
 // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
 let connectedPlayers = db.ref(".info/connected");
-//create variables to store user names, choices, user wins and losses
 
+//create variables to store user names, choices, user wins and losses
 let dingOn = true;
 var audioElement = document.createElement("audio");
 var typingTimeout;
@@ -46,16 +43,16 @@ let fsReport = {
   carried: 0,
   entries: []
 };
+let toDoVisible = false;
+let patVisible = false;
+let fsReportVisible = false;
+let justDeleted = false;
+$("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
 
-// Set it's source to the location
 audioElement.setAttribute("src", "./ding1.mp3");
 let myScreenName = "";
 
-//allow file input to have a file pasted into it
-window.addEventListener("paste", (e) => {
-  const fileInput = document.getElementById("input");
-  fileInput.files = e.clipboardData.files;
-});
+//BUTTONS*****************************************************************
 
 $("#messageInput").keyup(function () {
   if (myScreenName !== "") {
@@ -126,30 +123,6 @@ $("#btnDeleteOldPics").on("click", function () {
     });
 });
 
-db.ref("/Jolin/typing").on("child_added", function (snap) {
-  if (snap.val()) {
-    if (snap.val().personTyping !== myScreenName) {
-      makeTypingGifVisible();
-    }
-  }
-});
-
-function makeTypingGifVisible() {
-  $("#typingGif").css("visibility", "visible");
-  clearTimeout(typingTimeout);
-  typingTimeout = setTimeout(function () {
-    $("#typingGif").css("visibility", "hidden");
-  }, 1000);
-}
-
-window.onbeforeunload = function (event) {
-  db.ref("/Jolin/typing").remove();
-  for (let i = 0; i < messagesToDelete.length; i++) {
-    const msgKey = messagesToDelete[i];
-    db.ref("/Jolin/messages/" + msgKey).remove();
-  }
-};
-
 $("#btnDing").on("click", function () {
   if (dingOn) {
     dingOn = false;
@@ -160,12 +133,6 @@ $("#btnDing").on("click", function () {
   }
 });
 
-let toDoVisible = false;
-let patVisible = false;
-let fsReportVisible = false;
-let justDeleted = false;
-$("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
-// $("#patWrapper").hide("drop", { direction: "down" }, "slow");
 $("#btnToDo").on("click", function () {
   if (toDoVisible) {
     $("#toDoWrapper").hide("drop", { direction: "down" }, "slow");
@@ -265,6 +232,116 @@ $("#btnSendText").on("click", function () {
   }
 });
 
+$("#btnAddToDo").on("click", function () {
+  let item = $("#toDoInput").val();
+  item = urlify(item);
+  toDoRef.push({
+    toDo: item
+  });
+  $("#toDoInput").val("");
+});
+
+$(document).on("click", ".to-do-item", function (event) {
+  if ($("#passwordInput").val() !== "password") {
+    let aryIndex = parseInt(this.id);
+    let newAryToDo = aryToDo;
+    // alert(this.id)
+    newAryToDo.splice(aryIndex, 1); //problem is here
+    toDoRef.remove();
+    console.log(newAryToDo);
+    for (let i = 0; i < newAryToDo.length; i++) {
+      const element = newAryToDo[i];
+      toDoRef.push({
+        toDo: element
+      });
+    }
+  }
+});
+
+let pat;
+$("#submitPat").on("click", function (event) {
+  event.preventDefault();
+  pat.chapters = $("#chapters").val();
+  pat.dates = $("#patDates").val();
+  for (let i = 0; i < 9; i++) {
+    pat.questions[i].question = $("#question" + i).val();
+    pat.questions[i].answer = $("#answer" + i).val();
+  }
+  // console.log(pat);
+  patRef.set(pat);
+
+  // var patURL = "https://jolin-pat-api.herokuapp.com/api/pat";
+  // $.ajax({
+  //   url: patURL,
+  //   cache: false,
+  //   method: "POST",
+  //   crossDomain: true,
+  //   data: pat,
+  //   headers: {
+  //     "Access-Control-Allow-Origin":
+  //       "https://lamontblack1.github.io/jolinschatroom"
+  //   },
+  //   success: function (response) {
+  //     if (response === true) {
+  //       alert("Your answers have been saved!");
+  //     }
+  //   }
+  // });
+
+  //replaced with firebase, but was working as is
+  // $.post(patURL, pat).then(function (data) {
+  //   if (data === true) {
+  //     alert("Your answers have been saved!");
+  //   }
+  // });
+});
+
+$("#saveFsReport").on("click", function (event) {
+  event.preventDefault();
+  fsReport.entries = [];
+  fsReport.carried = $("#carried").val();
+  for (let i = 0; i < 5; i++) {
+    const value1 = $("#date" + i).val();
+    const value2 = $("#hours" + i).val();
+    const value3 = $("#plc" + i).val();
+    const value4 = $("#rv" + i).val();
+
+    let entryObject = {
+      date: value1,
+      hours: value2,
+      plc: value3,
+      rv: value4
+    };
+    fsReport.entries.push(entryObject);
+  }
+  fsReportRef.set(fsReport);
+});
+
+//EVENTS*********************************************************************************
+
+//allow file input to have a file pasted into it
+window.addEventListener("paste", (e) => {
+  const fileInput = document.getElementById("input");
+  fileInput.files = e.clipboardData.files;
+});
+
+db.ref("/Jolin/typing").on("child_added", function (snap) {
+  if (snap.val()) {
+    if (snap.val().personTyping !== myScreenName) {
+      makeTypingGifVisible();
+    }
+  }
+});
+
+//permanently delete any message keys that are in the messagesToDelete array
+window.onbeforeunload = function (event) {
+  db.ref("/Jolin/typing").remove();
+  for (let i = 0; i < messagesToDelete.length; i++) {
+    const msgKey = messagesToDelete[i];
+    db.ref("/Jolin/messages/" + msgKey).remove();
+  }
+};
+
 // When the client's connection state changes keep track of connections
 connectedPlayers.on("value", function (snap) {
   // If they are connected..
@@ -301,40 +378,6 @@ toDoRef.on("value", function (snap) {
     );
   }
 });
-
-$("#btnAddToDo").on("click", function () {
-  let item = $("#toDoInput").val();
-  item = urlify(item);
-  toDoRef.push({
-    toDo: item
-  });
-  $("#toDoInput").val("");
-});
-
-$(document).on("click", ".to-do-item", function (event) {
-  if ($("#passwordInput").val() !== "password") {
-    let aryIndex = parseInt(this.id);
-    let newAryToDo = aryToDo;
-    // alert(this.id)
-    newAryToDo.splice(aryIndex, 1); //problem is here
-    toDoRef.remove();
-    console.log(newAryToDo);
-    for (let i = 0; i < newAryToDo.length; i++) {
-      const element = newAryToDo[i];
-      toDoRef.push({
-        toDo: element
-      });
-    }
-  }
-});
-
-function pushMessage(player, messageToPost) {
-  messageListRef.push({
-    playerName: player,
-    message: messageToPost,
-    messageTime: firebase.database.ServerValue.TIMESTAMP
-  });
-}
 
 messageListRef.limitToLast(10).on(
   "child_added",
@@ -429,11 +472,11 @@ messageListRef.limitToLast(10).on(
         if (dingOn) {
           audioElement.play();
         }
-
+        //Put messages from others on the left
         $("#messagesBox").prepend(
           "<div class='row mb-1'><div class='col-10' style='float: left;'>" +
-            "<div class='card' id='message" +
-            msgIdCounter +
+            "<div class='card' id='" +
+            snapshot.key +
             "' style='background-color: #7FEFBD;'><div class='card-header p-1 pl-2 font-italic'>" +
             imgLine +
             msgPlayerName +
@@ -490,66 +533,6 @@ patRef.on("value", (snapshot) => {
   }
 });
 
-var patURL = "https://jolin-pat-api.herokuapp.com/api/pat";
-
-let pat;
-$("#submitPat").on("click", function (event) {
-  event.preventDefault();
-  pat.chapters = $("#chapters").val();
-  pat.dates = $("#patDates").val();
-  for (let i = 0; i < 9; i++) {
-    pat.questions[i].question = $("#question" + i).val();
-    pat.questions[i].answer = $("#answer" + i).val();
-  }
-  // console.log(pat);
-  patRef.set(pat);
-
-  // $.ajax({
-  //   url: patURL,
-  //   cache: false,
-  //   method: "POST",
-  //   crossDomain: true,
-  //   data: pat,
-  //   headers: {
-  //     "Access-Control-Allow-Origin":
-  //       "https://lamontblack1.github.io/jolinschatroom"
-  //   },
-  //   success: function (response) {
-  //     if (response === true) {
-  //       alert("Your answers have been saved!");
-  //     }
-  //   }
-  // });
-
-  //replaced with firebase, but was working as is
-  // $.post(patURL, pat).then(function (data) {
-  //   if (data === true) {
-  //     alert("Your answers have been saved!");
-  //   }
-  // });
-});
-
-$("#saveFsReport").on("click", function (event) {
-  event.preventDefault();
-  fsReport.entries = [];
-  fsReport.carried = $("#carried").val();
-  for (let i = 0; i < 5; i++) {
-    const value1 = $("#date" + i).val();
-    const value2 = $("#hours" + i).val();
-    const value3 = $("#plc" + i).val();
-    const value4 = $("#rv" + i).val();
-
-    let entryObject = {
-      date: value1,
-      hours: value2,
-      plc: value3,
-      rv: value4
-    };
-    fsReport.entries.push(entryObject);
-  }
-  fsReportRef.set(fsReport);
-});
-
 fsReportRef.on("value", (snapshot) => {
   fsReport = snapshot.val();
   $("#carried").val(fsReport.carried);
@@ -584,14 +567,23 @@ fsReportRef.on("value", (snapshot) => {
   );
 });
 
-//get the pat sheet info from my api, replaced with firebase
-// $.ajax({
-//   url: patURL,
-//   method: "GET"
-// }).then(function (response) {
-//   pat = response;
+//FUNCTIONS **********************************************************
 
-// });
+function makeTypingGifVisible() {
+  $("#typingGif").css("visibility", "visible");
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(function () {
+    $("#typingGif").css("visibility", "hidden");
+  }, 1000);
+}
+
+function pushMessage(player, messageToPost) {
+  messageListRef.push({
+    playerName: player,
+    message: messageToPost,
+    messageTime: firebase.database.ServerValue.TIMESTAMP
+  });
+}
 
 function urlify(text) {
   let urlRegex = /(https?:\/\/[^\s]+)/g;
