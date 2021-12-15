@@ -336,10 +336,7 @@ db.ref("/Jolin/typing").on("child_added", function (snap) {
 //permanently delete any message keys that are in the messagesToDelete array
 window.onbeforeunload = function (event) {
   db.ref("/Jolin/typing").remove();
-  for (let i = 0; i < messagesToDelete.length; i++) {
-    const msgKey = messagesToDelete[i];
-    db.ref("/Jolin/messages/" + msgKey).remove();
-  }
+  deleteDeletedMessages();
 };
 
 // When the client's connection state changes keep track of connections
@@ -594,6 +591,13 @@ function urlify(text) {
   // return text.replace(urlRegex, '<a href="$1">$1</a>')
 }
 
+function deleteDeletedMessages() {
+  for (let i = 0; i < messagesToDelete.length; i++) {
+    const msgKey = messagesToDelete[i];
+    db.ref("/Jolin/messages/" + msgKey).remove();
+  }
+}
+
 function get_browser() {
   var ua = navigator.userAgent,
     tem,
@@ -623,7 +627,7 @@ function get_browser() {
 
 var browser = get_browser(); // browser.name = 'Chrome'
 // browser.version = '40'
-
+alert(browser.name);
 if (browser.name === "safari") {
   $("#btnDeleteDeleted").attr("visibility", "visible");
 }
