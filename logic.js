@@ -123,6 +123,10 @@ $("#btnDeleteOldPics").on("click", function () {
     });
 });
 
+$("#btnDeleteDeleted").on("click", function () {
+  deleteDeletedMessages();
+});
+
 $("#btnDing").on("click", function () {
   if (dingOn) {
     dingOn = false;
@@ -625,9 +629,8 @@ function get_browser() {
   };
 }
 
-var browser = get_browser(); // browser.name = 'Chrome'
-// browser.version = '40'
-alert(browser.name);
-if (browser.name === "safari") {
+var browser = get_browser(); // browser.name = 'Chrome' browser.version = '40'
+
+if (browser.name === "Safari") {
   $("#btnDeleteDeleted").attr("visibility", "visible");
 }
