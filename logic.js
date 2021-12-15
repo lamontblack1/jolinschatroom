@@ -624,5 +624,6 @@ function get_browser() {
 var browser = get_browser(); // browser.name = 'Chrome'
 // browser.version = '40'
 
-console.log(browser);
-alert(browser.name);
+if (browser.name === "safari") {
+  $("#btnDeleteDeleted").attr("visibility", "visible");
+}
