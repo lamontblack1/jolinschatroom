@@ -630,7 +630,7 @@ function get_browser() {
 }
 
 var browser = get_browser(); // browser.name = 'Chrome' browser.version = '40'
-alert(browser.name.trim());
+// alert(browser.name.trim());
 if (browser.name.trim() == "Safari") {
   $("#btnDeleteDeleted").attr("visibility", "visible");
 }
